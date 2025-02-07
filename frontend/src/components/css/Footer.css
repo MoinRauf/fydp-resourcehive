@@ -1,0 +1,24 @@
+/* Footer.css */
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: rgba(4, 10, 19, 255);
+    color: white;
+    padding: 10px 0;
+    font-size: 14px;
+  }
+  
+  body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  main {
+    flex-grow: 1; /* Ensures main content takes available space */
+  }
+  

@@ -1,0 +1,34 @@
+/* HomePage.css */
+.homepage-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    background-color: rgba(6, 17, 29, 255); /* Set the background color of the whole page */
+    color: #fff; /* Set text color to white for contrast */
+}
+
+.homepage-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.button-style {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #fff; /* White background for buttons */
+    color: #000; /* Black text color for the buttons */
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.button-style:hover {
+    background-color: #555; /* Darker background on hover */
+    color: #000; /* Keep the text color black */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* Subtle shadow effect to make text appear dimmer */
+}
