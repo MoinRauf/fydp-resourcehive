@@ -1,0 +1,6 @@
+Front-end URL:
+https://resourcehive.vercel.app/
+
+
+API Documentation URL:
+https://documenter.getpostman.com/view/27916973/2sAXxWa98j
