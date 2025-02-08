@@ -7,13 +7,13 @@ const TypingText = () => {
     <div className="typing-container">
       <TypeAnimation
         sequence={[
-          "Welcome to Resource Hive 🌐",
+          "Welcome to Resource Hive🌐",
           1000,
-          "AI-Powered Healthcare Solutions 🏥",
+          "AI Healthcare Solutions🏥",
           1000,
-          "Equipment Monitoring System ✅",
+          "Equipment Monitoring✅",
           1000,
-          "Explore Our Features 🚀",
+          "Explore Amazing Features🚀",
           1000,
         ]}
         wrapper="span"
