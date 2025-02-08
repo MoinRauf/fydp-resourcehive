@@ -17,7 +17,7 @@ const HomePage = () => {
       {/* Login & Signup Buttons */}
       <div className="homepage-buttons">
         <button onClick={() => navigate("/signin")} className="button-style">
-          Login
+          Sign In
         </button>
         <button onClick={() => navigate("/signup")} className="button-style">
           Sign Up

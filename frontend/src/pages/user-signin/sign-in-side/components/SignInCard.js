@@ -103,7 +103,7 @@ export default function SignInCard() {
   return (
     <AppTheme> {/* Ensure AppTheme wraps the entire content */}
       <CssBaseline enableColorScheme />
-      <ColorModeSelect sx={{ position: "fixed", top: "1rem", right: "1rem" }} />
+      {/* <ColorModeSelect sx={{ position: "fixed", top: "1rem", right: "1rem" }} /> */}
       <Card variant="outlined">
         <Typography
           component="h1"
