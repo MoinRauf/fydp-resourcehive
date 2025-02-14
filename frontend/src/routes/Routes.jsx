@@ -8,6 +8,9 @@ import AboutPage from "../pages/AboutPage";
 import ContactPage from "../pages/ContactPage";
 import SignInSide from "../pages/user-signin/sign-in-side/SignInSide";
 import SignUpSide from "../pages/user-signup/sign-up-side/SignUpSide";
+import AdminForm from "../pages/form/admin/admin-form/AdminForm";
+import ManagerForm from "../pages/form/manager/manager-form/ManagerForm";
+import TechnicianForm from "../pages/form/technician/technician-form/TechnicianForm";
 
 const RouteComponent = () => {
   return (
@@ -15,9 +18,11 @@ const RouteComponent = () => {
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/contact" element={<ContactPage />} />
-      < Route path="/SignUp" element={<SignUpSide />} />
-     < Route path="/SignIn" element={<SignInSide />} />
-     
+      <Route path="/SignUp" element={<SignUpSide />} />
+      <Route path="/SignIn" element={<SignInSide />} />
+      <Route path="/manager" element={<ManagerForm />} />
+      <Route path="/technician" element={<TechnicianForm />} />
+      <Route path="/adminform" element={<AdminForm />}></Route>
     </Routes>
   );
 };

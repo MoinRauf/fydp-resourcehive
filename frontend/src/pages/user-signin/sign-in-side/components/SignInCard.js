@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import MuiCard from "@mui/material/Card";
@@ -8,12 +8,17 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import { toast } from "react-hot-toast"; // Import react-hot-toast
+import { toast } from "react-hot-toast";
 import ForgotPassword from "./ForgotPassword";
-import axios from "axios"; // Import Axios
-import ColorModeSelect from "../../shared-theme/ColorModeSelect";
-import { CssBaseline } from "@mui/material";
-import AppTheme from "../../shared-theme/AppTheme"; // Ensure AppTheme is imported
+import axios from "axios";
+// import ColorModeSelect from "../../shared-theme/ColorModeSelect";
+import { CssBaseline, Stack } from "@mui/material";
+import AppTheme from "../../shared-theme/AppTheme";
+// import { jwtDecode } from "jwt-decode";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { useState } from "react"; // Make sure useState is imported
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -41,8 +46,48 @@ export default function SignInCard() {
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate(); // Hook for navigation
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const [selected, setSelected] = useState({
+    admin: false,
+    manager: false,
+    tech: false,
+  });
+
+  // Function to handle checkbox change
+  const handleCheckboxChange = (event) => {
+    const { name } = event.target;
+    // Allow only one checkbox to be selected
+    setSelected((prevSelected) => {
+      const newSelected = {
+        admin: false,
+        manager: false,
+        tech: false,
+      };
+      newSelected[name] = true; // Set the selected checkbox to true
+      return newSelected; // Update state with only one checkbox selected
+    });
+  };
+
+  // Function to extract which checkboxes are selected
+  const getSelectedCheckboxes = () => {
+    const selectedLabels = Object.keys(selected)
+      .filter((key) => selected[key]) // Filter selected checkboxes
+      .map((key) => key.charAt(0).toUpperCase() + key.slice(1)); // Capitalize the label
+
+    console.log("Selected checkboxes:", selectedLabels);
+
+    // Delay the navigation by 4 seconds
+    // setTimeout(() => {
+    //   if (selectedLabels.includes("Admin")) {
+    //     // Navigate to the admin form if "Admin" is selected
+    //     navigate("/adminform");
+    //   } else if (selectedLabels.includes("Manager")) {
+    //     // Navigate to the manager form if "Manager" is selected
+    //     navigate("/manager");
+    //   } else {
+    //     // Handle case when no specific checkboxes are selected
+    //     navigate("/technician");
+    //   }
+    // }, 3000); // 4000 milliseconds = 4 seconds
   };
 
   const handleClose = () => {
@@ -64,6 +109,7 @@ export default function SignInCard() {
     setPasswordErrorMessage("");
 
     toast.dismiss();
+
     // Validate inputs
     if (!email || !password) {
       toast.error("All fields are required", { duration: 1500 });
@@ -71,6 +117,14 @@ export default function SignInCard() {
       if (!password) setPasswordError(true);
       return;
     }
+
+    if (!Object.values(selected).includes(true)) {
+      toast.error("Please select a role", { duration: 1500 });
+      return;
+    }
+
+    // Call function to log selected checkboxes
+    getSelectedCheckboxes(); // Now the selected checkboxes will be logged
 
     // Make the API request using Axios
     try {
@@ -85,11 +139,72 @@ export default function SignInCard() {
       // Check if login is successful
       if (response.data && response.data.token) {
         localStorage.setItem("token", response.data.token); // Store token in localStorage
+        const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+        console.log("this is local token", token);
+        console.log("Full response:", JSON.stringify(response.data));
+        // Check if requestedRole is nested inside another object
+        const requestedRole = response.data?.data?.user?.requestedRole;
+
+        // role checking main code start
+
+        const handleRoleRedirect = (requestedRole) => {
+          // Define role routes for easy navigation
+          const roleRoutes = {
+            Admin: "/adminform",
+            Manager: "/managerdashboard",
+            Technician: "/techniciandashboard",
+          };
+
+          // Check if the requestedRole is one of the predefined roles (Admin, Manager, Technician)
+          if (roleRoutes[requestedRole]) {
+            navigate(roleRoutes[requestedRole]); // Navigate to the respective route
+          } else if (requestedRole === "user") {
+            // If the role is 'user', check which checkbox is selected
+            const selectedLabels = Object.keys(selected)
+              .filter((key) => selected[key]) // Filter selected checkboxes
+              .map((key) => key.charAt(0).toUpperCase() + key.slice(1)); // Capitalize the label
+
+            if (selectedLabels.includes("Admin")) {
+              navigate("/");
+            } else if (selectedLabels.includes("Manager")) {
+              navigate("/");
+            } else if (selectedLabels.includes("Technician")) {
+              navigate("/");
+            } else {
+              // If no role is selected, show an error and redirect to home
+              toast.error("Please select a role", { duration: 1500 });
+              navigate("/"); // Redirect to home page if no role is selected
+            }
+          } else {
+            // If the role is not recognized or doesn't match, navigate to home
+            navigate("/"); // Redirect to home page if role is not found
+          }
+        };
+
+        // Check if requestedRole is available and valid
+        if (requestedRole) {
+          // Now call the function with the requestedRole
+          handleRoleRedirect(requestedRole);
+        } else {
+          // If requestedRole is undefined, log the error or handle the issue
+          console.log("requestedRole is undefined or invalid");
+          navigate("/"); // Redirect to home if requestedRole is undefined
+        }
+
+        //role checking main role end
+
         toast.success("Login successful", { duration: 1500 });
 
-        setTimeout(() => {
-          navigate("/"); // Navigate to home page after 3 seconds
-        }, 2000);
+        // Reset form after successful login
+        setSelected({ admin: false, manager: false, tech: false }); // Reset checkboxes
+        setEmailError(false); // Reset email error
+        setPasswordError(false); // Reset password error
+        setEmailErrorMessage(""); // Reset email error message
+        setPasswordErrorMessage(""); // Reset password error message
+
+        // Reset the input fields for email and password
+        document.getElementById("email").value = ""; // Reset email field
+        document.getElementById("password").value = ""; // Reset password field
       } else {
         toast.error("Invalid email or password", { duration: 1500 });
       }
@@ -101,9 +216,8 @@ export default function SignInCard() {
   };
 
   return (
-    <AppTheme> {/* Ensure AppTheme wraps the entire content */}
+    <AppTheme>
       <CssBaseline enableColorScheme />
-      {/* <ColorModeSelect sx={{ position: "fixed", top: "1rem", right: "1rem" }} /> */}
       <Card variant="outlined">
         <Typography
           component="h1"
@@ -116,7 +230,12 @@ export default function SignInCard() {
           component="form"
           onSubmit={handleSubmit}
           noValidate
-          sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 2 }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            gap: 2,
+          }}
         >
           <FormControl>
             <FormLabel htmlFor="email">Email</FormLabel>
@@ -153,15 +272,59 @@ export default function SignInCard() {
             />
           </FormControl>
           <ForgotPassword open={open} handleClose={handleClose} />
+
+          <FormGroup>
+            <span style={{ marginLeft: "4px", color: "white", opacity: 0.6 }}>
+              Roles
+            </span>
+
+            <Stack
+              direction="row"
+              gap={2}
+              sx={{ justifyContent: "center", alignItems: "center" }}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="admin"
+                    checked={selected.admin}
+                    onChange={handleCheckboxChange}
+                  />
+                }
+                label="Admin"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="manager"
+                    checked={selected.manager}
+                    onChange={handleCheckboxChange}
+                  />
+                }
+                label="Manager"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="tech"
+                    checked={selected.tech}
+                    onChange={handleCheckboxChange}
+                  />
+                }
+                label="Technician"
+              />
+            </Stack>
+          </FormGroup>
+
           <Button type="submit" fullWidth variant="contained">
             Sign in
           </Button>
           <Typography sx={{ textAlign: "center", display: "inline" }}>
             Don&apos;t have an account?{" "}
             <Button
-              onClick={() => navigate("/signup")} // Navigate to sign up page
+              onClick={() => navigate("/signup")}
               variant="body2"
-              sx={{ padding: 0, textTransform: "none" }} // Remove padding and text transform for a tighter layout
+              sx={{ padding: 0, textTransform: "none" }}
             >
               Sign up
             </Button>
