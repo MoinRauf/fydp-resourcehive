@@ -236,21 +236,28 @@ export default function AdminForm(props) {
           <Typography
             component="h1"
             variant="h4"
-            sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+            sx={{
+              width: "100%",
+              fontSize: "clamp(2rem, 10vw, 2.15rem)",
+              textAlign: "center", // Added this line to center the text
+            }}
           >
             Admin Form
           </Typography>
+
           <Box
             component="form"
             onSubmit={handleSubmit}
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
-            <Stack direction="row" spacing={5}>
-              {/* Name */}
+            {/* Name */}
+            <Typography variant="h6">Personal Details</Typography>
+            <Stack direction="row" gap={5}>
               <FormControl>
                 <FormLabel>Name</FormLabel>
                 <TextField
                   name="name"
+                  placeholder="Enter your name"
                   value={formData.name}
                   onChange={handleChange}
                   required
@@ -263,6 +270,7 @@ export default function AdminForm(props) {
                 <FormLabel>Email</FormLabel>
                 <TextField
                   name="email"
+                  placeholder="Enter your email"
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
@@ -276,6 +284,7 @@ export default function AdminForm(props) {
                 <FormLabel>Government ID Number</FormLabel>
                 <TextField
                   name="governmentIdNumber"
+                  placeholder="Enter government ID"
                   value={formData.governmentIdNumber}
                   onChange={handleChange}
                   required
@@ -284,12 +293,13 @@ export default function AdminForm(props) {
               </FormControl>
             </Stack>
 
-            <Stack direction="row" spacing={5}>
+            <Stack direction="row" gap={5}>
               {/* Phone Number */}
-              <FormControl>
+              <FormControl fullWidth>
                 <FormLabel>Phone Number</FormLabel>
                 <TextField
                   name="phoneNumber"
+                  placeholder="Enter phone number"
                   value={formData.phoneNumber}
                   onChange={handleChange}
                   required
@@ -298,10 +308,11 @@ export default function AdminForm(props) {
               </FormControl>
 
               {/* Role */}
-              <FormControl>
+              <FormControl fullWidth>
                 <FormLabel>Requested Role</FormLabel>
                 <TextField
                   name="requestedRole"
+                  placeholder="Enter requested role"
                   value={formData.requestedRole}
                   onChange={handleChange}
                   required
@@ -309,15 +320,16 @@ export default function AdminForm(props) {
                 />
               </FormControl>
             </Stack>
-            {/* Residential Address */}
+
             {/* Residential Address */}
             <Typography variant="h6">Residential Address</Typography>
 
-            <Stack direction="row" spacing={5}>
+            <Stack direction="row" gap={5}>
               <FormControl fullWidth>
                 <FormLabel>Street</FormLabel>
                 <TextField
                   name="street"
+                  placeholder="Enter street address"
                   onChange={(e) => handleNestedChange(e, "residentialAddress")}
                   required
                   fullWidth
@@ -328,6 +340,7 @@ export default function AdminForm(props) {
                 <FormLabel>City</FormLabel>
                 <TextField
                   name="city"
+                  placeholder="Enter city name"
                   onChange={(e) => handleNestedChange(e, "residentialAddress")}
                   required
                   fullWidth
@@ -338,40 +351,46 @@ export default function AdminForm(props) {
                 <FormLabel>State</FormLabel>
                 <TextField
                   name="state"
-                  onChange={(e) => handleNestedChange(e, "residentialAddress")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
-
-              <FormControl fullWidth>
-                <FormLabel>Zip Code</FormLabel>
-                <TextField
-                  name="zipCode"
-                  onChange={(e) => handleNestedChange(e, "residentialAddress")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
-
-              <FormControl fullWidth>
-                <FormLabel>Country</FormLabel>
-                <TextField
-                  name="country"
+                  placeholder="Enter state name"
                   onChange={(e) => handleNestedChange(e, "residentialAddress")}
                   required
                   fullWidth
                 />
               </FormControl>
             </Stack>
+
+            <Stack direction="row" gap={5}>
+              <FormControl fullWidth>
+                <FormLabel>Zip Code</FormLabel>
+                <TextField
+                  name="zipCode"
+                  placeholder="Enter zip code"
+                  onChange={(e) => handleNestedChange(e, "residentialAddress")}
+                  required
+                  fullWidth
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <FormLabel>Country</FormLabel>
+                <TextField
+                  name="country"
+                  placeholder="Enter country name"
+                  onChange={(e) => handleNestedChange(e, "residentialAddress")}
+                  required
+                  fullWidth
+                />
+              </FormControl>
+            </Stack>
+
             {/* Hospital Details */}
             <Typography variant="h6">Hospital Details</Typography>
 
-            <Stack direction="row" spacing={5}>
+            <Stack direction="row" gap={5}>
               <FormControl fullWidth>
                 <FormLabel>Hospital Name</FormLabel>
                 <TextField
                   name="hospitalName"
+                  placeholder="Enter hospital name"
                   value={formData.hospitalDetails.hospitalName} // Assuming you're binding the value
                   onChange={(e) => handleNestedChange(e, "hospitalDetails")}
                   required
@@ -383,6 +402,7 @@ export default function AdminForm(props) {
                 <FormLabel>Employee ID</FormLabel>
                 <TextField
                   name="employeeId"
+                  placeholder="Enter employee ID"
                   value={formData.hospitalDetails.employeeId} // Assuming you're binding the value
                   onChange={(e) => handleNestedChange(e, "hospitalDetails")}
                   required
@@ -394,17 +414,21 @@ export default function AdminForm(props) {
                 <FormLabel>Position</FormLabel>
                 <TextField
                   name="position"
+                  placeholder="Enter your position"
                   value={formData.hospitalDetails.position} // Assuming you're binding the value
                   onChange={(e) => handleNestedChange(e, "hospitalDetails")}
                   required
                   fullWidth
                 />
               </FormControl>
+            </Stack>
 
+            <Stack direction="row" gap={5}>
               <FormControl fullWidth>
                 <FormLabel>ID Card Number</FormLabel>
                 <TextField
                   name="idCardNumber"
+                  placeholder="Enter ID card number"
                   value={formData.hospitalDetails.idCardNumber} // Assuming you're binding the value
                   onChange={(e) => handleNestedChange(e, "hospitalDetails")}
                   required
@@ -417,6 +441,7 @@ export default function AdminForm(props) {
                 <TextField
                   type="date"
                   name="idCardIssueDate"
+                  placeholder="Enter issue date"
                   value={formData.hospitalDetails.idCardIssueDate} // Assuming you're binding the value
                   onChange={(e) => handleNestedChange(e, "hospitalDetails")}
                   required
@@ -429,17 +454,21 @@ export default function AdminForm(props) {
                 <TextField
                   type="date"
                   name="idCardExpiryDate"
+                  placeholder="Enter expiry date"
                   value={formData.hospitalDetails.idCardExpiryDate} // Assuming you're binding the value
                   onChange={(e) => handleNestedChange(e, "hospitalDetails")}
                   required
                   fullWidth
                 />
               </FormControl>
+            </Stack>
 
+            <Stack direction="row" gap={5}>
               <FormControl fullWidth>
                 <FormLabel>Hospital Contact Phone</FormLabel>
                 <TextField
                   name="hospitalContactPhone"
+                  placeholder="Enter hospital phone"
                   value={formData.hospitalContactPhone} // Binding value for phone
                   onChange={(e) => handleNestedChange(e, "hospitalDetails")}
                   required
@@ -451,6 +480,7 @@ export default function AdminForm(props) {
                 <FormLabel>Hospital Contact Email</FormLabel>
                 <TextField
                   name="hospitalContactEmail"
+                  placeholder="Enter hospital email"
                   value={formData.hospitalContactEmail} // Binding value for email
                   onChange={(e) => handleNestedChange(e, "hospitalDetails")}
                   required

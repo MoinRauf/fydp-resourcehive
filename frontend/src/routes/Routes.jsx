@@ -20,8 +20,8 @@ const RouteComponent = () => {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/SignUp" element={<SignUpSide />} />
       <Route path="/SignIn" element={<SignInSide />} />
-      <Route path="/manager" element={<ManagerForm />} />
-      <Route path="/technician" element={<TechnicianForm />} />
+      <Route path="/managerform" element={<ManagerForm />} />
+      <Route path="/technicianform" element={<TechnicianForm />} />
       <Route path="/adminform" element={<AdminForm />}></Route>
     </Routes>
   );
