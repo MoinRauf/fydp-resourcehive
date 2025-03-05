@@ -12,6 +12,7 @@ const App = () => {
       <RouteComponent />
       <Toaster /> {/* Add the Toaster component here */}
       {/* <Footer /> */}
+      {/* checking */}
     </div>
   );
 };
