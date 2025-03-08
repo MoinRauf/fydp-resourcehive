@@ -5,6 +5,9 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@mui/icons-material": "^6.4.3",
     "@mui/material": "^6.4.3",
     "@testing-library/jest-dom": "^5.17.0",
@@ -18,11 +21,13 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.1",
+    "react-modal": "^3.16.3",
     "react-router-dom": "^6.29.0",
     "react-scripts": "5.0.1",
     "react-type-animation": "^3.2.0",
     "react-typewriter-effect": "^1.1.0",
     "react-typical": "^0.1.3",
+    "sweetalert2": "^11.17.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

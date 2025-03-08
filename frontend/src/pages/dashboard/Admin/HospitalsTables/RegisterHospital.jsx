@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { styled } from "@mui/material/styles";
 import MuiCard from "@mui/material/Card";
+import { toast } from "react-hot-toast";
+
 import {
   FormControl,
   FormLabel,
@@ -14,7 +16,8 @@ const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignSelf: "center",
-  width: "100%", // Ensures the card takes full width
+  width: "100%",
+  marginBottom: "20px !important", // Ensures the card takes full width
   padding: theme.spacing(4),
   gap: theme.spacing(2),
   margin: "auto",
@@ -62,6 +65,13 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Fetch token from localStorage
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in localStorage. Please log in.");
+        toast.error("Authentication required. Please log in.");
+        return;
+      }
       const response = await axios.post(
         "https://resourcehive-backend.vercel.app/api/v1/hospitals/register-hospital",
         {
@@ -99,10 +109,32 @@ const Register = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzcyM2UxY2ZjZmFlODg2NWY2YmE0NyIsImlhdCI6MTc0MTEwNTI2NywiZXhwIjoxNzQxOTY5MjY3fQ.so24278sLpGglaVnHVt03l-ghfUs9gbPykwgQSU3W0w"}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
+      toast.success("Hospital registered successfully!");
+      setFormData({
+        name: "",
+        street: "",
+        city: "",
+        state: "",
+        zipCode: "",
+        country: "",
+        phone: "",
+        email: "",
+        website: "",
+        department1Name: "",
+        department1Head: "",
+        department1Contact: "",
+        department2Name: "",
+        department2Head: "",
+        department2Contact: "",
+        registrationNumber: "",
+        establishedDate: "",
+        active: true,
+        approvalStatus: "pending",
+      });
       console.log(response.data); // Handle the success response
     } catch (error) {
       console.error("Error registering hospital:", error);
@@ -314,13 +346,13 @@ const Register = () => {
               type="submit"
               fullWidth
               sx={{
-                width: "150px !important" ,
+                width: "150px !important",
                 height: "56px !important",
                 padding: "10px !important", // Adjust padding for better fit
                 marginTop: "25px !important", // Align vertically
               }}
             >
-              Register 
+              Register
             </Button>
           </Stack>
         </Stack>

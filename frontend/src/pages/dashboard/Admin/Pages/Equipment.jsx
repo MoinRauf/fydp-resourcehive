@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useRef, useCallback } from "react";
 import Layout from "../components/Layout/Layout";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppTheme from "../../../form/admin/shared-theme/AppTheme";
 import { styled } from "@mui/material/styles";
 import MuiCard from "@mui/material/Card";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+import RegisteredEquipment from "../EquipmentTables/RegisteredEquipment";
+import RegisterEquipment from "../EquipmentTables/RegisterEquipment";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -35,16 +37,57 @@ const SignInContainer = styled(Stack)({
 });
 
 const Equipment = () => {
-  console.log("Equipment component rendered!"); // Debugging log
+  const [selectedHospital, setSelectedHospital] = useState(null);
+  const registerEquipmentRef = useRef(null);
+
+  const handleHospitalSelect = useCallback((hospitalData) => {
+    console.log("Received hospital data in Equipment:", hospitalData);
+    setSelectedHospital(hospitalData);
+
+    // Add a slight delay to ensure DOM updates are complete
+    setTimeout(() => {
+      if (registerEquipmentRef.current) {
+        console.log("Scrolling to RegisterEquipment");
+        registerEquipmentRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        console.warn("registerEquipmentRef is not set");
+      }
+    }, 100);
+  }, []);
+
+  console.log("Equipment component rendered! Selected Hospital:", selectedHospital);
+
   return (
     <AppTheme>
       <CssBaseline enableColorScheme />
       <Layout>
-        <SignInContainer>
-          <Card>
-            <p>This is the Equipment management section.</p>
-          </Card>
-        </SignInContainer>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: "bold",
+            textAlign: "left",
+            width: "100%",
+            padding: "20px",
+          }}
+        >
+          Registered Equipment
+        </Typography>
+        <RegisteredEquipment onHospitalSelect={handleHospitalSelect} />
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: "bold",
+            textAlign: "left",
+            width: "100%",
+            padding: "20px",
+          }}
+        >
+          Register Equipment
+        </Typography>
+        <RegisterEquipment
+          ref={registerEquipmentRef}
+          hospital={selectedHospital}
+        />
       </Layout>
     </AppTheme>
   );

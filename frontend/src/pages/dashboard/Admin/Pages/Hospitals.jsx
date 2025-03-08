@@ -6,8 +6,8 @@ import AppTheme from "../../../form/admin/shared-theme/AppTheme";
 import { styled } from "@mui/material/styles";
 import MuiCard from "@mui/material/Card";
 import { Stack, Typography } from "@mui/material";
-import CollapsibleTable from "../HospitalsTables/Registered";
-import Register from "../HospitalsTables/Register";
+import CollapsibleTable from "../HospitalsTables/RegisteredHospital";
+import Register from "../HospitalsTables/RegisterHospital";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -65,7 +65,7 @@ const Hospitals = () => {
         >
           Register Hospital
         </Typography>
-        <Register/>
+        <Register />
       </Layout>
     </AppTheme>
   );

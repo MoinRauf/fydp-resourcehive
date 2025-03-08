@@ -4,7 +4,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import AppTheme from "../../../form/admin/shared-theme/AppTheme";
 import { styled } from "@mui/material/styles";
 import MuiCard from "@mui/material/Card";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+import RegisteredRequest from "../HospitalRequestsTables/RegisteredRequest";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -39,11 +40,18 @@ const HospitalRequests = () => {
     <AppTheme>
       <CssBaseline enableColorScheme />
       <Layout>
-        <SignInContainer>
-          <Card>
-            <p>This is the Hospital request section.</p>
-          </Card>
-        </SignInContainer>
+      <Typography
+          variant="h4"
+          sx={{
+            fontWeight: "bold",
+            textAlign: "left",
+            width: "100%",
+            padding: "20px",
+          }}
+        >
+          Hospital Requests
+        </Typography>
+        <RegisteredRequest />
       </Layout>
     </AppTheme>
   );
