@@ -18,6 +18,8 @@ import HospitalRequests from "../pages/dashboard/Admin/Pages/HospitalRequests";
 // import Hospitals from "../pages/dashboard/Admin/pages/Hospitals";
 import Logout from "../pages/dashboard/Admin/Pages/Logout";
 import Dashboard from "../pages/dashboard/Admin/Pages/Dashboard";
+import ManagerHospitalSelection from "../pages/roleshospitalselection/manager/manager-hospital-selection/ManagerHospitalSelection";
+import TechnicianHospitalSelection from "../pages/roleshospitalselection/technician/technician-hospital-selection/TechnicianHospitalSelection";
 
 const RouteComponent = () => {
   return (
@@ -27,9 +29,14 @@ const RouteComponent = () => {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/SignUp" element={<SignUpSide />} />
       <Route path="/SignIn" element={<SignInSide />} />
+      {/* Roles Form Routes */}
       <Route path="/managerform" element={<ManagerForm />} />
       <Route path="/technicianform" element={<TechnicianForm />} />
       <Route path="/adminform" element={<AdminForm />}></Route>
+      {/* Roles Hospital Selection Routes */}
+      <Route path="/hospitals/manager" element={<ManagerHospitalSelection />}></Route>
+      <Route path="/hospitals/technician" element={<TechnicianHospitalSelection />}></Route>
+      
       {/* Admin Dash Routes */}
       <Route path="/adminDashboard" element={<Dashboard />} />
       <Route path="/Equipment" element={<Equipment />} />

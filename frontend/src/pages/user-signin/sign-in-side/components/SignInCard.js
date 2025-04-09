@@ -49,7 +49,7 @@ export default function SignInCard() {
   const [selected, setSelected] = useState({
     admin: false,
     manager: false,
-    tech: false,
+    technician: false,
   });
 
   // Function to handle checkbox change
@@ -60,7 +60,7 @@ export default function SignInCard() {
       const newSelected = {
         admin: false,
         manager: false,
-        tech: false,
+        technician: false,
       };
       newSelected[name] = true; // Set the selected checkbox to true
       return newSelected; // Update state with only one checkbox selected
@@ -118,6 +118,7 @@ export default function SignInCard() {
       return;
     }
 
+
     if (!Object.values(selected).includes(true)) {
       toast.error("Please select a role", { duration: 1500 });
       return;
@@ -142,37 +143,38 @@ export default function SignInCard() {
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
         console.log("this is local token", token);
         console.log("Full response:", JSON.stringify(response.data));
-        // Check if requestedRole is nested inside another object
-        const requestedRole = response.data?.data?.user?.requestedRole;
+        // Check if role is nested inside another object
+        const role = response.data?.data?.user?.role;
 
         // role checking main code start
 
-        const handleRoleRedirect = (requestedRole) => {
+        const handleRoleRedirect = (role) => {
           // Define role routes for easy navigation
           const roleRoutes = {
-            Admin: "/adminform",
-            Manager: "/managerdashboard",
-            Technician: "/techniciandashboard",
+            admin: "/adminDashboard",
+            manager: "/managerdashboard",
+            technician: "/techniciandashboard",
           };
 
-          // Check if the requestedRole is one of the predefined roles (Admin, Manager, Technician)
-          if (roleRoutes[requestedRole]) {
-            navigate(roleRoutes[requestedRole]); // Navigate to the respective route
-          } else if (requestedRole === "user") {
+          // Check if the role is one of the predefined roles (Admin, Manager, Technician)
+          if (roleRoutes[role]) {
+            navigate(roleRoutes[role]); // Navigate to the respective route
+          } else if (role === "user") {
             // If the role is 'user', check which checkbox is selected
             const selectedLabels = Object.keys(selected)
               .filter((key) => selected[key]) // Filter selected checkboxes
               .map((key) => key.charAt(0).toUpperCase() + key.slice(1)); // Capitalize the label
+              console.log("this is selected label",selectedLabels)
 
             if (selectedLabels.includes("Admin")) {
-              navigate("/");
+              navigate("/adminform");
             } else if (selectedLabels.includes("Manager")) {
-              navigate("/");
+              navigate("/managerform");
             } else if (selectedLabels.includes("Technician")) {
-              navigate("/");
+              navigate("/technicianform");
             } else {
               // If no role is selected, show an error and redirect to home
-              toast.error("Please select a role", { duration: 1500 });
+              toast.error("Please select a roleeeeeeeeeeeeee", { duration: 1500 });
               navigate("/"); // Redirect to home page if no role is selected
             }
           } else {
@@ -181,14 +183,14 @@ export default function SignInCard() {
           }
         };
 
-        // Check if requestedRole is available and valid
-        if (requestedRole) {
-          // Now call the function with the requestedRole
-          handleRoleRedirect(requestedRole);
+        // Check if role is available and valid
+        if (role) {
+          // Now call the function with the role
+          handleRoleRedirect(role);
         } else {
-          // If requestedRole is undefined, log the error or handle the issue
-          console.log("requestedRole is undefined or invalid");
-          navigate("/"); // Redirect to home if requestedRole is undefined
+          // If role is undefined, log the error or handle the issue
+          console.log("role is undefined or invalid");
+          navigate("/"); // Redirect to home if role is undefined
         }
 
         //role checking main role end
@@ -196,7 +198,7 @@ export default function SignInCard() {
         toast.success("Login successful", { duration: 1500 });
 
         // Reset form after successful login
-        setSelected({ admin: false, manager: false, tech: false }); // Reset checkboxes
+        setSelected({ admin: false, manager: false, technician: false }); // Reset checkboxes
         setEmailError(false); // Reset email error
         setPasswordError(false); // Reset password error
         setEmailErrorMessage(""); // Reset email error message
@@ -306,8 +308,8 @@ export default function SignInCard() {
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="tech"
-                    checked={selected.tech}
+                    name="technician"
+                    checked={selected.technician}
                     onChange={handleCheckboxChange}
                   />
                 }

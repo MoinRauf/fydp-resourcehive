@@ -29,7 +29,7 @@ const DeleteHospital = ({
         selectedHospitalId,
         "this is the hospital ID that wants to delete"
       );
-
+      console.log(selectedHospitalId,"hospital id")
       await axios.delete(
         `https://resourcehive-backend.vercel.app/api/v1/hospitals/${selectedHospitalId}`,
         {

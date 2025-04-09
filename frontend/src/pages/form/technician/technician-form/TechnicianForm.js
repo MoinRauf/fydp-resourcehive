@@ -200,7 +200,7 @@ export default function TechnicianForm(props) {
         data,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -208,7 +208,7 @@ export default function TechnicianForm(props) {
 
       if (response.status === 200) {
         toast.success("Profile completed successfully!");
-        navigate("/signin"); // Navigate to home page
+        navigate("/hospitals/manager"); // Navigate to home page
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong!");

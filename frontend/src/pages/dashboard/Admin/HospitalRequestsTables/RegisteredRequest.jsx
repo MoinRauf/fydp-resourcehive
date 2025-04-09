@@ -67,6 +67,7 @@ function Row({ row }) {
 
   // Determine approval status for the "Approval" column
   const getApprovalStatus = (request) => {
+    console.log(request.userId)
     if (request.userId.role === request.userId.requestedRole) {
       return "Approved"; // Roles match, either from API or backend response
     }

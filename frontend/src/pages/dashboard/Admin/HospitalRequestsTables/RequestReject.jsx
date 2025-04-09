@@ -16,8 +16,9 @@ const RequestReject = async (hospitalId, userId, currentStatus, setRequests) => 
     }
     if (currentStatus === "approved") {
       // Disapprove: Change role from "manager" to "user"
+      console.log(hospitalId, userId ,"wao")
       await axios.patch(
-        `https://resourcehive-backend.vercel.app/api/v1/hospitals/hospital-request-approval/${hospitalId}/${userId}`,
+        `https://resourcehive-backend.vercel.app/api/v1/hospitals/hospital-manager-request-rejected-by-admin/${hospitalId}/${userId}`,
         { role: "user" },
         {
           headers: {

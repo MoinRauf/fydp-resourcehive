@@ -200,12 +200,12 @@ export default function AdminForm(props) {
         data,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log(response.JSON(),"this is complete profile response")
+
       if (response.status === 200) {
         toast.success("Profile completed successfully!");
         navigate("/signin"); // Navigate to home page

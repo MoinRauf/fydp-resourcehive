@@ -67,7 +67,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function AdminForm(props) {
+export default function TechnicianHospitalSelection(props) {
   const navigate = useNavigate();
 
   // Form states
@@ -200,12 +200,12 @@ export default function AdminForm(props) {
         data,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log(response.JSON(),"this is complete profile response")
+
       if (response.status === 200) {
         toast.success("Profile completed successfully!");
         navigate("/signin"); // Navigate to home page
@@ -242,7 +242,7 @@ export default function AdminForm(props) {
               textAlign: "center", // Added this line to center the text
             }}
           >
-            Admin Form
+            Technician Form
           </Typography>
 
           <Box

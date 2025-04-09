@@ -1,5 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
+
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import Button from "@mui/material/Button";
@@ -200,7 +201,7 @@ export default function ManagerForm(props) {
         data,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -208,294 +209,306 @@ export default function ManagerForm(props) {
 
       if (response.status === 200) {
         toast.success("Profile completed successfully!");
-        navigate("/signin"); // Navigate to home page
+        navigate("/hospitals/manager"); // Navigate to home page
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong!");
     }
   };
   return (
-    <AppTheme {...props}>
-      <CssBaseline enableColorScheme />
-      <SignInContainer direction="column" justifyContent="space-between">
-        {/* <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} /> */}
-        <Card
-          variant="outlined"
-          sx={{
-            width: "110%",
-            minWidth: "fit-content",
-            maxWidth: "none",
-            display: "flex",
-            flexDirection: "column",
-            p: 5,
-            maxHeight: "90vh", // Restrict height
-            overflow: "auto", // Enable scrolling
-          }}
-        >
-          {/* <SitemarkIcon /> */}
-          <Typography
-            component="h1"
-            variant="h4"
+    <>
+      <AppTheme {...props}>
+        <CssBaseline enableColorScheme />
+        <SignInContainer direction="column" justifyContent="space-between">
+          {/* <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} /> */}
+          <Card
+            variant="outlined"
             sx={{
-              width: "100%",
-              fontSize: "clamp(2rem, 10vw, 2.15rem)",
-              textAlign: "center", // Added this line to center the text
+              width: "110%",
+              minWidth: "fit-content",
+              maxWidth: "none",
+              display: "flex",
+              flexDirection: "column",
+              p: 5,
+              maxHeight: "90vh", // Restrict height
+              overflow: "auto", // Enable scrolling
             }}
           >
-            Manager Form
-          </Typography>
+            {/* <SitemarkIcon /> */}
+            <Typography
+              component="h1"
+              variant="h4"
+              sx={{
+                width: "100%",
+                fontSize: "clamp(2rem, 10vw, 2.15rem)",
+                textAlign: "center", // Added this line to center the text
+              }}
+            >
+              Manager Form
+            </Typography>
 
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-          >
-            {/* Name */}
-            <Typography variant="h6">Personal Details</Typography>
-            <Stack direction="row" gap={5}>
-              <FormControl>
-                <FormLabel>Name</FormLabel>
-                <TextField
-                  name="name"
-                  placeholder="Enter your name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  fullWidth
-                />
-              </FormControl>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+            >
+              {/* Name */}
+              <Typography variant="h6">Personal Details</Typography>
+              <Stack direction="row" gap={5}>
+                <FormControl>
+                  <FormLabel>Name</FormLabel>
+                  <TextField
+                    name="name"
+                    placeholder="Enter your name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
 
-              {/* Email */}
-              <FormControl>
-                <FormLabel>Email</FormLabel>
-                <TextField
-                  name="email"
-                  placeholder="Enter your email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  fullWidth
-                />
-              </FormControl>
+                {/* Email */}
+                <FormControl>
+                  <FormLabel>Email</FormLabel>
+                  <TextField
+                    name="email"
+                    placeholder="Enter your email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
 
-              {/* Government ID Number */}
-              <FormControl>
-                <FormLabel>Government ID Number</FormLabel>
-                <TextField
-                  name="governmentIdNumber"
-                  placeholder="Enter government ID"
-                  value={formData.governmentIdNumber}
-                  onChange={handleChange}
-                  required
-                  fullWidth
-                />
-              </FormControl>
-            </Stack>
+                {/* Government ID Number */}
+                <FormControl>
+                  <FormLabel>Government ID Number</FormLabel>
+                  <TextField
+                    name="governmentIdNumber"
+                    placeholder="Enter government ID"
+                    value={formData.governmentIdNumber}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
+              </Stack>
 
-            <Stack direction="row" gap={5}>
-              {/* Phone Number */}
-              <FormControl fullWidth>
-                <FormLabel>Phone Number</FormLabel>
-                <TextField
-                  name="phoneNumber"
-                  placeholder="Enter phone number"
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                  required
-                  fullWidth
-                />
-              </FormControl>
+              <Stack direction="row" gap={5}>
+                {/* Phone Number */}
+                <FormControl fullWidth>
+                  <FormLabel>Phone Number</FormLabel>
+                  <TextField
+                    name="phoneNumber"
+                    placeholder="Enter phone number"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
 
-              {/* Role */}
-              <FormControl fullWidth>
-                <FormLabel>Requested Role</FormLabel>
-                <TextField
-                  name="requestedRole"
-                  placeholder="Enter requested role"
-                  value={formData.requestedRole}
-                  onChange={handleChange}
-                  required
-                  fullWidth
-                />
-              </FormControl>
-            </Stack>
+                {/* Role */}
+                <FormControl fullWidth>
+                  <FormLabel>Requested Role</FormLabel>
+                  <TextField
+                    name="requestedRole"
+                    placeholder="Enter requested role"
+                    value={formData.requestedRole}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
+              </Stack>
 
-            {/* Residential Address */}
-            <Typography variant="h6">Residential Address</Typography>
+              {/* Residential Address */}
+              <Typography variant="h6">Residential Address</Typography>
 
-            <Stack direction="row" gap={5}>
-              <FormControl fullWidth>
-                <FormLabel>Street</FormLabel>
-                <TextField
-                  name="street"
-                  placeholder="Enter street address"
-                  onChange={(e) => handleNestedChange(e, "residentialAddress")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
+              <Stack direction="row" gap={5}>
+                <FormControl fullWidth>
+                  <FormLabel>Street</FormLabel>
+                  <TextField
+                    name="street"
+                    placeholder="Enter street address"
+                    onChange={(e) =>
+                      handleNestedChange(e, "residentialAddress")
+                    }
+                    required
+                    fullWidth
+                  />
+                </FormControl>
 
-              <FormControl fullWidth>
-                <FormLabel>City</FormLabel>
-                <TextField
-                  name="city"
-                  placeholder="Enter city name"
-                  onChange={(e) => handleNestedChange(e, "residentialAddress")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
+                <FormControl fullWidth>
+                  <FormLabel>City</FormLabel>
+                  <TextField
+                    name="city"
+                    placeholder="Enter city name"
+                    onChange={(e) =>
+                      handleNestedChange(e, "residentialAddress")
+                    }
+                    required
+                    fullWidth
+                  />
+                </FormControl>
 
-              <FormControl fullWidth>
-                <FormLabel>State</FormLabel>
-                <TextField
-                  name="state"
-                  placeholder="Enter state name"
-                  onChange={(e) => handleNestedChange(e, "residentialAddress")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
-            </Stack>
+                <FormControl fullWidth>
+                  <FormLabel>State</FormLabel>
+                  <TextField
+                    name="state"
+                    placeholder="Enter state name"
+                    onChange={(e) =>
+                      handleNestedChange(e, "residentialAddress")
+                    }
+                    required
+                    fullWidth
+                  />
+                </FormControl>
+              </Stack>
 
-            <Stack direction="row" gap={5}>
-              <FormControl fullWidth>
-                <FormLabel>Zip Code</FormLabel>
-                <TextField
-                  name="zipCode"
-                  placeholder="Enter zip code"
-                  onChange={(e) => handleNestedChange(e, "residentialAddress")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
-              <FormControl fullWidth>
-                <FormLabel>Country</FormLabel>
-                <TextField
-                  name="country"
-                  placeholder="Enter country name"
-                  onChange={(e) => handleNestedChange(e, "residentialAddress")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
-            </Stack>
+              <Stack direction="row" gap={5}>
+                <FormControl fullWidth>
+                  <FormLabel>Zip Code</FormLabel>
+                  <TextField
+                    name="zipCode"
+                    placeholder="Enter zip code"
+                    onChange={(e) =>
+                      handleNestedChange(e, "residentialAddress")
+                    }
+                    required
+                    fullWidth
+                  />
+                </FormControl>
+                <FormControl fullWidth>
+                  <FormLabel>Country</FormLabel>
+                  <TextField
+                    name="country"
+                    placeholder="Enter country name"
+                    onChange={(e) =>
+                      handleNestedChange(e, "residentialAddress")
+                    }
+                    required
+                    fullWidth
+                  />
+                </FormControl>
+              </Stack>
 
-            {/* Hospital Details */}
-            <Typography variant="h6">Hospital Details</Typography>
+              {/* Hospital Details */}
+              <Typography variant="h6">Hospital Details</Typography>
 
-            <Stack direction="row" gap={5}>
-              <FormControl fullWidth>
-                <FormLabel>Hospital Name</FormLabel>
-                <TextField
-                  name="hospitalName"
-                  placeholder="Enter hospital name"
-                  value={formData.hospitalDetails.hospitalName} // Assuming you're binding the value
-                  onChange={(e) => handleNestedChange(e, "hospitalDetails")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
+              <Stack direction="row" gap={5}>
+                <FormControl fullWidth>
+                  <FormLabel>Hospital Name</FormLabel>
+                  <TextField
+                    name="hospitalName"
+                    placeholder="Enter hospital name"
+                    value={formData.hospitalDetails.hospitalName} // Assuming you're binding the value
+                    onChange={(e) => handleNestedChange(e, "hospitalDetails")}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
 
-              <FormControl fullWidth>
-                <FormLabel>Employee ID</FormLabel>
-                <TextField
-                  name="employeeId"
-                  placeholder="Enter employee ID"
-                  value={formData.hospitalDetails.employeeId} // Assuming you're binding the value
-                  onChange={(e) => handleNestedChange(e, "hospitalDetails")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
+                <FormControl fullWidth>
+                  <FormLabel>Employee ID</FormLabel>
+                  <TextField
+                    name="employeeId"
+                    placeholder="Enter employee ID"
+                    value={formData.hospitalDetails.employeeId} // Assuming you're binding the value
+                    onChange={(e) => handleNestedChange(e, "hospitalDetails")}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
 
-              <FormControl fullWidth>
-                <FormLabel>Position</FormLabel>
-                <TextField
-                  name="position"
-                  placeholder="Enter your position"
-                  value={formData.hospitalDetails.position} // Assuming you're binding the value
-                  onChange={(e) => handleNestedChange(e, "hospitalDetails")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
-            </Stack>
+                <FormControl fullWidth>
+                  <FormLabel>Position</FormLabel>
+                  <TextField
+                    name="position"
+                    placeholder="Enter your position"
+                    value={formData.hospitalDetails.position} // Assuming you're binding the value
+                    onChange={(e) => handleNestedChange(e, "hospitalDetails")}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
+              </Stack>
 
-            <Stack direction="row" gap={5}>
-              <FormControl fullWidth>
-                <FormLabel>ID Card Number</FormLabel>
-                <TextField
-                  name="idCardNumber"
-                  placeholder="Enter ID card number"
-                  value={formData.hospitalDetails.idCardNumber} // Assuming you're binding the value
-                  onChange={(e) => handleNestedChange(e, "hospitalDetails")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
+              <Stack direction="row" gap={5}>
+                <FormControl fullWidth>
+                  <FormLabel>ID Card Number</FormLabel>
+                  <TextField
+                    name="idCardNumber"
+                    placeholder="Enter ID card number"
+                    value={formData.hospitalDetails.idCardNumber} // Assuming you're binding the value
+                    onChange={(e) => handleNestedChange(e, "hospitalDetails")}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
 
-              <FormControl fullWidth>
-                <FormLabel>ID Card Issue Date</FormLabel>
-                <TextField
-                  type="date"
-                  name="idCardIssueDate"
-                  placeholder="Enter issue date"
-                  value={formData.hospitalDetails.idCardIssueDate} // Assuming you're binding the value
-                  onChange={(e) => handleNestedChange(e, "hospitalDetails")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
+                <FormControl fullWidth>
+                  <FormLabel>ID Card Issue Date</FormLabel>
+                  <TextField
+                    type="date"
+                    name="idCardIssueDate"
+                    placeholder="Enter issue date"
+                    value={formData.hospitalDetails.idCardIssueDate} // Assuming you're binding the value
+                    onChange={(e) => handleNestedChange(e, "hospitalDetails")}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
 
-              <FormControl fullWidth>
-                <FormLabel>ID Card Expiry Date</FormLabel>
-                <TextField
-                  type="date"
-                  name="idCardExpiryDate"
-                  placeholder="Enter expiry date"
-                  value={formData.hospitalDetails.idCardExpiryDate} // Assuming you're binding the value
-                  onChange={(e) => handleNestedChange(e, "hospitalDetails")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
-            </Stack>
+                <FormControl fullWidth>
+                  <FormLabel>ID Card Expiry Date</FormLabel>
+                  <TextField
+                    type="date"
+                    name="idCardExpiryDate"
+                    placeholder="Enter expiry date"
+                    value={formData.hospitalDetails.idCardExpiryDate} // Assuming you're binding the value
+                    onChange={(e) => handleNestedChange(e, "hospitalDetails")}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
+              </Stack>
 
-            <Stack direction="row" gap={5}>
-              <FormControl fullWidth>
-                <FormLabel>Hospital Contact Phone</FormLabel>
-                <TextField
-                  name="hospitalContactPhone"
-                  placeholder="Enter hospital phone"
-                  value={formData.hospitalContactPhone} // Binding value for phone
-                  onChange={(e) => handleNestedChange(e, "hospitalDetails")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
+              <Stack direction="row" gap={5}>
+                <FormControl fullWidth>
+                  <FormLabel>Hospital Contact Phone</FormLabel>
+                  <TextField
+                    name="hospitalContactPhone"
+                    placeholder="Enter hospital phone"
+                    value={formData.hospitalContactPhone} // Binding value for phone
+                    onChange={(e) => handleNestedChange(e, "hospitalDetails")}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
 
-              <FormControl fullWidth>
-                <FormLabel>Hospital Contact Email</FormLabel>
-                <TextField
-                  name="hospitalContactEmail"
-                  placeholder="Enter hospital email"
-                  value={formData.hospitalContactEmail} // Binding value for email
-                  onChange={(e) => handleNestedChange(e, "hospitalDetails")}
-                  required
-                  fullWidth
-                />
-              </FormControl>
-            </Stack>
+                <FormControl fullWidth>
+                  <FormLabel>Hospital Contact Email</FormLabel>
+                  <TextField
+                    name="hospitalContactEmail"
+                    placeholder="Enter hospital email"
+                    value={formData.hospitalContactEmail} // Binding value for email
+                    onChange={(e) => handleNestedChange(e, "hospitalDetails")}
+                    required
+                    fullWidth
+                  />
+                </FormControl>
+              </Stack>
 
-            {/* Submit Button */}
-            <Button type="submit" variant="contained">
-              Submit
-            </Button>
-          </Box>
-        </Card>
-      </SignInContainer>
-    </AppTheme>
+              {/* Submit Button */}
+              <Button type="submit" variant="contained">
+                Submit
+              </Button>
+            </Box>
+          </Card>
+        </SignInContainer>
+      </AppTheme>
+    </>
   );
 }
