@@ -28,17 +28,12 @@ function Row({ row }) {
   const [requests, setRequests] = useState([]);
   const [loadingRequests, setLoadingRequests] = useState(false);
 
-  // Token constant to ensure consistency
-  // const AUTH_TOKEN =
-  //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzcyM2UxY2ZjZmFlODg2NWY2YmE0NyIsImlhdCI6MTc0MTEwNTI2NywiZXhwIjoxNzQxOTY5MjY3fQ.so24278sLpGglaVnHVt03l-ghfUs9gbPykwgQSU3W0w";
-
   // Fetch approval requests when the row is expanded
   useEffect(() => {
     if (open && requests.length === 0) {
       const fetchRequests = async () => {
         setLoadingRequests(true);
         try {
-          // Fetch token from localStorage
           const token = localStorage.getItem("token");
           if (!token) {
             console.error("No token found in localStorage. Please log in.");
@@ -53,11 +48,13 @@ function Row({ row }) {
               },
             }
           );
-          console.log("API Response:", response.data.data);
-          setRequests(response.data.data || []);
+          // Ensure response.data.data is an array or set to empty array if undefined/null
+          const requestData = Array.isArray(response.data.data) ? response.data.data : [];
+          console.log("API Response:", requestData);
+          setRequests(requestData);
         } catch (error) {
           console.error("Error fetching approval requests:", error);
-          setRequests([]);
+          setRequests([]); // Set to empty array on error
         } finally {
           setLoadingRequests(false);
         }
@@ -66,31 +63,14 @@ function Row({ row }) {
     }
   }, [open, row._id]);
 
-  // Determine approval status for the "Approval" column
-  // const getApprovalStatuss = (request) => {
-  //   if (request.userId.role === request.userId.requestedRole) {
-  //     return "Approved"; // Roles match, either from API or backend response
-  //   } else {
-  //     return "Pending";
-  //   }
-  // };
-  const getApprovalStatus = (response) => {
-    console.log("Full Response:", response);
-  
-    // Access the role and requestedRole properly (adjust based on actual structure)
-    const role = response.userId?.role; // Access role from userId if it's nested
-    const requestedRole = response.userId?.requestedRole; // Access requestedRole from userId if nested
-  
-    // Log values to verify
+  const getApprovalStatus = (request) => {
+    console.log("Full Response:", request);
+    const role = request.userId?.role;
+    const requestedRole = request.userId?.requestedRole;
     console.log("Role:", role, "Requested Role:", requestedRole);
-  
-    if (role === requestedRole) {
-      return "Approved"; // Roles match
-    } else {
-      return "Not Approved"; // Roles don't match
-    }
+    return role === requestedRole ? "Approved" : "Not Approved";
   };
-  
+
   return (
     <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -115,9 +95,7 @@ function Row({ row }) {
             {row.contactDetails.website}
           </a>
         </TableCell>
-        <TableCell align="right">
-          {/* No actions for the hospital row itself */}
-        </TableCell>
+        <TableCell align="right"></TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -168,9 +146,9 @@ function Row({ row }) {
                                 request.userId._id,
                                 setRequests
                               )
-                            } // Updated function name
+                            }
                             color="success"
-                            sx={{ mr: 1 }} // Gap between buttons
+                            sx={{ mr: 1 }}
                           >
                             <CheckCircleIcon />
                           </IconButton>
@@ -182,7 +160,7 @@ function Row({ row }) {
                                 request.userId.approvalStatus,
                                 setRequests
                               )
-                            } // Updated function name
+                            }
                             color="error"
                           >
                             <CancelIcon />
@@ -193,7 +171,7 @@ function Row({ row }) {
                   ) : (
                     <TableRow>
                       <TableCell colSpan={6} align="center">
-                        No approval requests found.
+                        No data available
                       </TableCell>
                     </TableRow>
                   )}
