@@ -53,6 +53,7 @@ function Row({ row }) {
               },
             }
           );
+          console.log("API Response:", response.data.data);
           setRequests(response.data.data || []);
         } catch (error) {
           console.error("Error fetching approval requests:", error);
@@ -66,23 +67,30 @@ function Row({ row }) {
   }, [open, row._id]);
 
   // Determine approval status for the "Approval" column
-  const getApprovalStatus = (request) => {
-    const user = request.userId;
-    if (!user) {
-      return "Unknown"; // or whatever makes sense
+  // const getApprovalStatuss = (request) => {
+  //   if (request.userId.role === request.userId.requestedRole) {
+  //     return "Approved"; // Roles match, either from API or backend response
+  //   } else {
+  //     return "Pending";
+  //   }
+  // };
+  const getApprovalStatus = (response) => {
+    console.log("Full Response:", response);
+  
+    // Access the role and requestedRole properly (adjust based on actual structure)
+    const role = response.userId?.role; // Access role from userId if it's nested
+    const requestedRole = response.userId?.requestedRole; // Access requestedRole from userId if nested
+  
+    // Log values to verify
+    console.log("Role:", role, "Requested Role:", requestedRole);
+  
+    if (role === requestedRole) {
+      return "Approved"; // Roles match
+    } else {
+      return "Not Approved"; // Roles don't match
     }
-    if (request.userId?.role === request.userId?.requestedRole) {
-      return "Approved"; // Roles match, either from API or backend response
-    }
-    if (request.userId?.approvalStatus === "pending") {
-      return "Pending"; // Default state when roles don't match
-    }
-    if (request.userId?.approvalStatus === "rejected") {
-      return "Not Approved"; // After reject or disapprove
-    }
-    return "Not Approved"; // Fallback for any other case
   };
-
+  
   return (
     <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -92,19 +100,19 @@ function Row({ row }) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row?.name}
+          {row.name}
         </TableCell>
         <TableCell align="right">
-          {row?.location.address.city}, {row?.location.address.state}
+          {row.location.address.city}, {row.location.address.state}
         </TableCell>
-        <TableCell align="right">{row?.contactDetails.phone}</TableCell>
+        <TableCell align="right">{row.contactDetails.phone}</TableCell>
         <TableCell align="right">
           <a
-            href={row?.contactDetails.website}
+            href={row.contactDetails.website}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {row?.contactDetails.website}
+            {row.contactDetails.website}
           </a>
         </TableCell>
         <TableCell align="right">
@@ -138,16 +146,16 @@ function Row({ row }) {
                     </TableRow>
                   ) : requests.length > 0 ? (
                     requests.map((request) => (
-                      <TableRow key={request?._id}>
-                        <TableCell>{request.userId?.name}</TableCell>
+                      <TableRow key={request._id}>
+                        <TableCell>{request.userId.name}</TableCell>
                         <TableCell align="right">
-                          {request.userId?.email}
+                          {request.userId.email}
                         </TableCell>
                         <TableCell align="right">
-                          {request.userId?.requestedRole}
+                          {request.userId.requestedRole}
                         </TableCell>
                         <TableCell align="right">
-                          {request.userId?.role}
+                          {request.userId.role}
                         </TableCell>
                         <TableCell align="right">
                           {getApprovalStatus(request)}
@@ -156,8 +164,8 @@ function Row({ row }) {
                           <IconButton
                             onClick={() =>
                               RequestApproval(
-                                request?.hospitalId,
-                                request?.userId._id,
+                                request.hospitalId,
+                                request.userId._id,
                                 setRequests
                               )
                             } // Updated function name
@@ -169,9 +177,9 @@ function Row({ row }) {
                           <IconButton
                             onClick={() =>
                               RequestReject(
-                                request?.hospitalId,
-                                request?.userId._id,
-                                request?.userId.approvalStatus,
+                                request.hospitalId,
+                                request.userId._id,
+                                request.userId.approvalStatus,
                                 setRequests
                               )
                             } // Updated function name

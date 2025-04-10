@@ -1,11 +1,17 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-// Token constant to ensure consistency
-// const AUTH_TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzcyM2UxY2ZjZmFlODg2NWY2YmE0NyIsImlhdCI6MTc0MTEwNTI2NywiZXhwIjoxNzQxOTY5MjY3fQ.so24278sLpGglaVnHVt03l-ghfUs9gbPykwgQSU3W0w";
-
 // Reject/Disapprove action: Set role to "user" if approved, otherwise just mark as rejected
-const RequestReject = async (hospitalId, userId, currentStatus, setRequests) => {
+const RequestReject = async (
+  hospitalId,
+  userId,
+  currentStatus,
+  setRequests
+) => {
+  console.log("Hospital ID:", hospitalId);
+  console.log("User ID:", userId);
+  console.log("current status", currentStatus);
+
   try {
     // Fetch token from localStorage
     const token = localStorage.getItem("token");
@@ -14,9 +20,10 @@ const RequestReject = async (hospitalId, userId, currentStatus, setRequests) => 
       toast.error("Authentication required. Please log in.");
       return;
     }
+
+    // API request logic for rejection
     if (currentStatus === "approved") {
-      // Disapprove: Change role from "manager" to "user"
-      console.log(hospitalId, userId ,"wao")
+      console.log(hospitalId, userId, "Rejecting request");
       await axios.patch(
         `https://resourcehive-backend.vercel.app/api/v1/hospitals/hospital-manager-request-rejected-by-admin/${hospitalId}/${userId}`,
         { role: "user" },
@@ -27,11 +34,19 @@ const RequestReject = async (hospitalId, userId, currentStatus, setRequests) => 
           },
         }
       );
+
       // Update local state to reflect disapproval
       setRequests((prevRequests) =>
         prevRequests.map((req) =>
           req.userId._id === userId
-            ? { ...req, userId: { ...req.userId, approvalStatus: "rejected", role: "user" } }
+            ? {
+                ...req,
+                userId: {
+                  ...req.userId,
+                  approvalStatus: "rejected",
+                  role: "user",
+                },
+              }
             : req
         )
       );
@@ -47,38 +62,8 @@ const RequestReject = async (hospitalId, userId, currentStatus, setRequests) => 
     }
   } catch (error) {
     console.error("Error rejecting/disapproving request:", error);
+    toast.error("Failed to reject the request. Please try again.");
   }
 };
 
 export default RequestReject;
-
-// Reject/Disapprove action: Handle rejection entirely on the frontend
-
-
-// const RequestReject = async (hospitalId, userId, currentStatus, setRequests) => {
-//   try {
-//     if (currentStatus === "approved") {
-//       // Disapprove: Change role from "manager" to "user" locally
-//       setRequests((prevRequests) =>
-//         prevRequests.map((req) =>
-//           req.userId._id === userId
-//             ? { ...req, userId: { ...req.userId, approvalStatus: "rejected", role: "user" } }
-//             : req
-//         )
-//       );
-//     } else {
-//       // Initial rejection: Just mark as rejected without changing role
-//       setRequests((prevRequests) =>
-//         prevRequests.map((req) =>
-//           req.userId._id === userId
-//             ? { ...req, userId: { ...req.userId, approvalStatus: "rejected" } }
-//             : req
-//         )
-//       );
-//     }
-//   } catch (error) {
-//     console.error("Error rejecting/disapproving request:", error);
-//   }
-// };
-
-// export default RequestReject;
