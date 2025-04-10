@@ -80,12 +80,14 @@ function Row({ row }) {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
-      console.log("ok sended");
-      if (response.status === 200) {
+
+      if (response.status === 201) {
         toast.success("Join request sent successfully!");
+        navigate("/");
       }
     } catch (error) {
       toast.error("Failed to send join request!");
@@ -137,10 +139,19 @@ export default function ManagerHospitalSelection(props) {
   React.useEffect(() => {
     const fetchHospitals = async () => {
       try {
+        const token = localStorage.getItem("token"); // or however you store your token
+
         const response = await axios.get(
-          "https://resourcehive-backend.vercel.app/api/v1/hospitals/registered-hospitals"
+          "https://resourcehive-backend.vercel.app/api/v1/hospitals/registered-hospitals",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
         );
-        console.log("API Response:", response.data.data); // Log the API response for debugging
+
+        console.log("API Response:", response.data.data);
         setHospitals(response.data.data);
         setLoading(false);
       } catch (error) {

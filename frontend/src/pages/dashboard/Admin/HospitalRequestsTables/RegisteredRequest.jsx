@@ -67,14 +67,17 @@ function Row({ row }) {
 
   // Determine approval status for the "Approval" column
   const getApprovalStatus = (request) => {
-    console.log(request.userId)
-    if (request.userId.role === request.userId.requestedRole) {
+    const user = request.userId;
+    if (!user) {
+      return "Unknown"; // or whatever makes sense
+    }
+    if (request.userId?.role === request.userId?.requestedRole) {
       return "Approved"; // Roles match, either from API or backend response
     }
-    if (request.userId.approvalStatus === "pending") {
+    if (request.userId?.approvalStatus === "pending") {
       return "Pending"; // Default state when roles don't match
     }
-    if (request.userId.approvalStatus === "rejected") {
+    if (request.userId?.approvalStatus === "rejected") {
       return "Not Approved"; // After reject or disapprove
     }
     return "Not Approved"; // Fallback for any other case
@@ -89,19 +92,19 @@ function Row({ row }) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.name}
+          {row?.name}
         </TableCell>
         <TableCell align="right">
-          {row.location.address.city}, {row.location.address.state}
+          {row?.location.address.city}, {row?.location.address.state}
         </TableCell>
-        <TableCell align="right">{row.contactDetails.phone}</TableCell>
+        <TableCell align="right">{row?.contactDetails.phone}</TableCell>
         <TableCell align="right">
           <a
-            href={row.contactDetails.website}
+            href={row?.contactDetails.website}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {row.contactDetails.website}
+            {row?.contactDetails.website}
           </a>
         </TableCell>
         <TableCell align="right">
@@ -135,16 +138,16 @@ function Row({ row }) {
                     </TableRow>
                   ) : requests.length > 0 ? (
                     requests.map((request) => (
-                      <TableRow key={request._id}>
-                        <TableCell>{request.userId.name}</TableCell>
+                      <TableRow key={request?._id}>
+                        <TableCell>{request.userId?.name}</TableCell>
                         <TableCell align="right">
-                          {request.userId.email}
+                          {request.userId?.email}
                         </TableCell>
                         <TableCell align="right">
-                          {request.userId.requestedRole}
+                          {request.userId?.requestedRole}
                         </TableCell>
                         <TableCell align="right">
-                          {request.userId.role}
+                          {request.userId?.role}
                         </TableCell>
                         <TableCell align="right">
                           {getApprovalStatus(request)}
@@ -153,8 +156,8 @@ function Row({ row }) {
                           <IconButton
                             onClick={() =>
                               RequestApproval(
-                                request.hospitalId,
-                                request.userId._id,
+                                request?.hospitalId,
+                                request?.userId._id,
                                 setRequests
                               )
                             } // Updated function name
@@ -166,9 +169,9 @@ function Row({ row }) {
                           <IconButton
                             onClick={() =>
                               RequestReject(
-                                request.hospitalId,
-                                request.userId._id,
-                                request.userId.approvalStatus,
+                                request?.hospitalId,
+                                request?.userId._id,
+                                request?.userId.approvalStatus,
                                 setRequests
                               )
                             } // Updated function name
