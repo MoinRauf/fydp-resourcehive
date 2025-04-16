@@ -201,7 +201,7 @@ export default function ManagerForm(props) {
         data,
         {
           headers: {
-            // "Content-Type": "application/json",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
