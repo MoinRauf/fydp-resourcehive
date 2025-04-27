@@ -35,11 +35,11 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/resourcehive.git
+   git clone https://github.com/MoinRauf/fydp-resourcehive.git
 
 2. Navigate to the project directory:
    ```bash
-   cd resourcehive
+   cd resourcehive   
 
 3. Install backend dependencies:
    ```bash
@@ -57,4 +57,4 @@
    npm start
 7. Deployment:
    ```bash
-   vercel link: https://resourcehive.vercel.app/
+   vercel link: https://fydp-resourcehive.vercel.app/
