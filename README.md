@@ -57,4 +57,5 @@
    npm start
 7. Deployment:
    ```bash
-   vercel link: https://fydp-resourcehive.vercel.app/
+   Frontend Vercel URL: https://fydp-resourcehive.vercel.app/
+   Backend Vercel URL: https://resourcehive-backend.vercel.app/
