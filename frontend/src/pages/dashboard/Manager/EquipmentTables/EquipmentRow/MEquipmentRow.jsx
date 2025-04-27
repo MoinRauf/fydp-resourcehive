@@ -1,6 +1,6 @@
-// EquipmentRow.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import EventIcon from "@mui/icons-material/Event";
 import {
   TableRow,
   TableCell,
@@ -21,9 +21,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Stack from "@mui/material/Stack";
 import DeleteEquipment from "../MDeleteEquipment";
 import EditEquipment from "../MEditEquipment";
-
-// const AUTH_TOKEN =
-//   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzcyM2UxY2ZjZmFlODg2NWY2YmE0NyIsImlhdCI6MTc0MTEwNTI2NywiZXhwIjoxNzQxOTY5MjY3fQ.so24278sLpGglaVnHVt03l-ghfUs9gbPykwgQSU3W0w";
+import MSetSchedule from "frontend/src/pages/dashboard/Manager/EquipmentTables/EquipmentRow/MSetSchedule.jsx"; // Import MSetSchedule
 
 function EquipmentRow({ hospital, onAddEquipment }) {
   const [open, setOpen] = useState(false);
@@ -32,6 +30,7 @@ function EquipmentRow({ hospital, onAddEquipment }) {
   const [refetchTrigger, setRefetchTrigger] = useState(0);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openScheduleDialog, setOpenScheduleDialog] = useState(false); // State for MSetSchedule dialog
   const [selectedEquipmentId, setSelectedEquipmentId] = useState(null);
   const [selectedEquipment, setSelectedEquipment] = useState(null);
 
@@ -57,7 +56,7 @@ function EquipmentRow({ hospital, onAddEquipment }) {
           const response = await axios.get(
             `https://resourcehive-backend.vercel.app/api/v1/equipments/${hospital._id}`,
             {
-              headers: { Authorization: `Bearer ${token}` }, 
+              headers: { Authorization: `Bearer ${token}` },
             }
           );
           console.log("Full API response:", response);
@@ -131,6 +130,13 @@ function EquipmentRow({ hospital, onAddEquipment }) {
 
     setSelectedEquipment(equipment);
     setOpenEditDialog(true);
+  };
+
+  // Define handleOpenScheduleDialog to open MSetSchedule dialog
+  const handleOpenScheduleDialog = (equipment) => {
+    console.log("Opening schedule dialog for equipment:", equipment);
+    setSelectedEquipment(equipment);
+    setOpenScheduleDialog(true);
   };
 
   // Callback to trigger refetch after deletion or updation
@@ -255,9 +261,15 @@ function EquipmentRow({ hospital, onAddEquipment }) {
                               >
                                 <DeleteIcon />
                               </IconButton>
-
-
-                              
+                              <IconButton
+                                size="small"
+                                onClick={() =>
+                                  handleOpenScheduleDialog(equipment) // Pass equipment to dialog
+                                }
+                                title="Set Schedule"
+                              >
+                                <EventIcon />
+                              </IconButton>
                             </Stack>
                           </TableCell>
                         </TableRow>
@@ -293,6 +305,17 @@ function EquipmentRow({ hospital, onAddEquipment }) {
           equipment={selectedEquipment}
           setEquipments={setEquipments}
           onEquipmentChange={handleEquipmentChange}
+        />
+      )}
+
+      {openScheduleDialog && (
+        <MSetSchedule
+          openDialog={openScheduleDialog}
+          setOpenDialog={setOpenScheduleDialog}
+          hospitalId={hospital._id}
+          equipment={selectedEquipment}
+          setEquipments={setEquipments}
+          onScheduleChange={handleEquipmentChange} // Pass refetch callback
         />
       )}
     </>

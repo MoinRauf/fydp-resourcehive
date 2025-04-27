@@ -1,5 +1,5 @@
 import React from "react";
-import MiniDrawer from "../drawer/AdminDrawer";
+import MiniDrawer from "../drawer/TechDrawer";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 

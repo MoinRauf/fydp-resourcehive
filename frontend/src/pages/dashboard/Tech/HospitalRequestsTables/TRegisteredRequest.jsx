@@ -19,8 +19,8 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // Approve icon
 import CancelIcon from "@mui/icons-material/Cancel"; // Reject icon
 import PropTypes from "prop-types";
-import RequestApproval from "./TRequestApproval"; // Updated import
-import RequestReject from "./TRequestReject"; // Updated import
+import TRequestApproval from "../../Tech/HospitalRequestsTables/TRequestApproval"; // Updated import
+import TRequestReject from "../../Tech/HospitalRequestsTables/TRequestReject"; // Updated import
 
 // Row Component to show hospital details and requests
 function Row({ row }) {
@@ -49,7 +49,9 @@ function Row({ row }) {
             }
           );
           // Ensure response.data.data is an array or set to empty array if undefined/null
-          const requestData = Array.isArray(response.data.data) ? response.data.data : [];
+          const requestData = Array.isArray(response.data.data)
+            ? response.data.data
+            : [];
           console.log("API Response:", requestData);
           setRequests(requestData);
         } catch (error) {
@@ -141,7 +143,7 @@ function Row({ row }) {
                         <TableCell align="right">
                           <IconButton
                             onClick={() =>
-                              RequestApproval(
+                              TRequestApproval(
                                 request.hospitalId,
                                 request.userId._id,
                                 setRequests
@@ -154,7 +156,7 @@ function Row({ row }) {
                           </IconButton>
                           <IconButton
                             onClick={() =>
-                              RequestReject(
+                              TRequestReject(
                                 request.hospitalId,
                                 request.userId._id,
                                 request.userId.approvalStatus,

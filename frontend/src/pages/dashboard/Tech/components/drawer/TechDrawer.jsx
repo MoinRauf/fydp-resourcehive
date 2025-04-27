@@ -121,27 +121,27 @@ export default function MiniDrawer() {
     {
       text: "Dashboard",
       icon: <HomeIcon sx={{ marginLeft: "6.5px" }} />,
-      navigateTo: "/adminDashboard",
+      navigateTo: "/technicianDashboard",
     },
-    {
-      text: "Hospitals",
-      icon: <LocalHospitalIcon sx={{ marginLeft: "6.5px" }} />,
-      navigateTo: "/Hospitals",
-    },
-    {
-      text: "Hospital Requests",
-      icon: <AssignmentTurnedInIcon sx={{ marginLeft: "6.5px" }} />,
-      navigateTo: "/HospitalRequests",
-    },
-    {
-      text: "Equipment",
-      icon: <MedicalServicesIcon sx={{ marginLeft: "6.5px" }} />,
-      navigateTo: "/Equipment",
-    },
+    // {
+    //   text: "Hospitals",
+    //   icon: <LocalHospitalIcon sx={{ marginLeft: "6.5px" }} />,
+    //   navigateTo: "/THospitals",
+    // },
+    // {
+    //   text: "Hospital Requests",
+    //   icon: <AssignmentTurnedInIcon sx={{ marginLeft: "6.5px" }} />,
+    //   navigateTo: "/THospitalRequests",
+    // },
+    // {
+    //   text: "Equipment",
+    //   icon: <MedicalServicesIcon sx={{ marginLeft: "6.5px" }} />,
+    //   navigateTo: "/TEquipment",
+    // },
     {
       text: "Logout",
       icon: <ExitToAppIcon sx={{ marginLeft: "6.5px" }} />,
-      navigateTo: "/Logout",
+      navigateTo: "/TLogout",
     },
   ];
 
@@ -163,7 +163,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Admin Dashboard
+            Tech Dashboard
           </Typography>
         </Toolbar>
       </AppBar>

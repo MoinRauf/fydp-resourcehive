@@ -5,7 +5,7 @@ import {
   TableBody,
   TableHead,
   TableRow,
-  TableCell,
+  TableCell,  
   TableContainer,
   Paper,
   Skeleton,
@@ -17,46 +17,11 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Stack,
-  CircularProgress,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiCard from "@mui/material/Card";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import Layout from "../components/Layout/Layout";
-import AppTheme from "../../../form/admin/shared-theme/AppTheme";
-
-const Card = styled(MuiCard)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignSelf: "center",
-  width: "100%",
-  padding: theme.spacing(4),
-  gap: theme.spacing(2),
-  margin: "auto",
-  [theme.breakpoints.up("sm")]: {
-    maxWidth: "800px",
-  },
-  boxShadow:
-    "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
-  ...(theme.palette.mode === "dark" && {
-    boxShadow:
-      "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
-  }),
-}));
-
-const SignInContainer = styled(Stack)({
-  flex: 1,
-  minHeight: "100vh",
-  padding: "60px 20px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-});
 
 // Row Component to show maintenance details
 function Row({ row }) {
@@ -111,7 +76,7 @@ function Row({ row }) {
   );
 }
 
-const Dashboard = () => {
+export default function MaintenanceTable() {
   const [hospitals, setHospitals] = useState([]);
   const [selectedHospital, setSelectedHospital] = useState("");
   const [equipment, setEquipment] = useState([]);
@@ -170,7 +135,10 @@ const Dashboard = () => {
         console.log("Full equipment API response:", response);
         console.log("Raw response.data:", response.data);
         console.log("Equipment data (response.data.data):", response.data.data);
-        console.log("Is response.data.data an array?", Array.isArray(response.data.data));
+        console.log(
+          "Is response.data.data an array?",
+          Array.isArray(response.data.data)
+        );
         const equipmentData = response.data.data || response.data;
         console.log("equipmentData before processing:", equipmentData);
         const equipmentsArray = Array.isArray(equipmentData)
@@ -229,129 +197,109 @@ const Dashboard = () => {
     return () => clearInterval(intervalId);
   }, [selectedHospital, selectedEquipment]);
 
-  if (loadingHospitals) {
-    return (
-      <AppTheme>
-        <CssBaseline enableColorScheme />
-        <Layout>
-          <SignInContainer>
-            <CircularProgress />
-          </SignInContainer>
-        </Layout>
-      </AppTheme>
-    );
-  }
-
   return (
-    <AppTheme>
-      <CssBaseline enableColorScheme />
-      <Layout>
-        <SignInContainer>
-          <Card>
-            <Typography variant="h4" className="mb-6 text-gray-800 font-bold">
-              Maintenance Records
-            </Typography>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <Typography variant="h4" className="mb-6 text-gray-800 font-bold">
+          Maintenance Records
+        </Typography>
 
-            {/* Hospital Dropdown */}
-            <FormControl fullWidth sx={{ mb: 4 }}>
-              <InputLabel id="hospital-select-label">Select Hospital</InputLabel>
-              <Select
-                labelId="hospital-select-label"
-                value={selectedHospital}
-                label="Select Hospital"
-                onChange={(e) => setSelectedHospital(e.target.value)}
-                disabled={loadingHospitals}
-              >
-                {loadingHospitals ? (
-                  <MenuItem value="" disabled>
-                    <Skeleton variant="text" width="100%" />
-                  </MenuItem>
-                ) : hospitals.length > 0 ? (
-                  hospitals.map((hospital) => (
-                    <MenuItem key={hospital._id} value={hospital._id}>
-                      {hospital.name}
-                    </MenuItem>
-                  ))
-                ) : (
-                  <MenuItem value="" disabled>
-                    No hospitals found
-                  </MenuItem>
-                )}
-              </Select>
-            </FormControl>
+        {/* Hospital Dropdown */}
+        <FormControl fullWidth sx={{ mb: 4 }}>
+          <InputLabel id="hospital-select-label">Select Hospital</InputLabel>
+          <Select
+            labelId="hospital-select-label"
+            value={selectedHospital}
+            label="Select Hospital"
+            onChange={(e) => setSelectedHospital(e.target.value)}
+            disabled={loadingHospitals}
+          >
+            {loadingHospitals ? (
+              <MenuItem value="" disabled>
+                <Skeleton variant="text" width="100%" />
+              </MenuItem>
+            ) : hospitals.length > 0 ? (
+              hospitals.map((hospital) => (
+                <MenuItem key={hospital._id} value={hospital._id}>
+                  {hospital.name}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem value="" disabled>
+                No hospitals found
+              </MenuItem>
+            )}
+          </Select>
+        </FormControl>
 
-            {/* Equipment Dropdown */}
-            <FormControl fullWidth sx={{ mb: 6 }} disabled={!selectedHospital}>
-              <InputLabel id="equipment-select-label">Select Equipment</InputLabel>
-              <Select
-                labelId="equipment-select-label"
-                value={selectedEquipment}
-                label="Select Equipment"
-                onChange={(e) => setSelectedEquipment(e.target.value)}
-                disabled={loadingEquipment || !selectedHospital}
-              >
-                {loadingEquipment ? (
-                  <MenuItem value="" disabled>
-                    <Skeleton variant="text" width="100%" />
-                  </MenuItem>
-                ) : equipment.length > 0 ? (
-                  equipment.map((equip) => (
-                    <MenuItem key={equip.equipmentId} value={equip.equipmentId}>
-                      {equip.name || equip.type || "Unnamed Equipment"}
-                    </MenuItem>
-                  ))
-                ) : (
-                  <MenuItem value="" disabled>
-                    No equipment found
-                  </MenuItem>
-                )}
-              </Select>
-            </FormControl>
+        {/* Equipment Dropdown */}
+        <FormControl fullWidth sx={{ mb: 6 }} disabled={!selectedHospital}>
+          <InputLabel id="equipment-select-label">Select Equipment</InputLabel>
+          <Select
+            labelId="equipment-select-label"
+            value={selectedEquipment}
+            label="Select Equipment"
+            onChange={(e) => setSelectedEquipment(e.target.value)}
+            disabled={loadingEquipment || !selectedHospital}
+          >
+            {loadingEquipment ? (
+              <MenuItem value="" disabled>
+                <Skeleton variant="text" width="100%" />
+              </MenuItem>
+            ) : equipment.length > 0 ? (
+              equipment.map((equip) => (
+                <MenuItem key={equip.equipmentId} value={equip.equipmentId}>
+                  {equip.name || equip.type || "Unnamed Equipment"}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem value="" disabled>
+                No equipment found
+              </MenuItem>
+            )}
+          </Select>
+        </FormControl>
 
-            {/* Maintenance Table */}
-            <TableContainer component={Paper}>
-              <Table aria-label="collapsible table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell />
-                    <TableCell>Timestamp</TableCell>
-                    <TableCell align="right">Action</TableCell>
+        {/* Maintenance Table */}
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Timestamp</TableCell>
+                <TableCell align="right">Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {loadingMaintenances ? (
+                Array.from(new Array(3)).map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Skeleton variant="circular" width={40} height={40} />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton variant="text" width="80%" />
+                    </TableCell>
+                    <TableCell align="right">
+                      <Skeleton variant="text" width="40%" />
+                    </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {loadingMaintenances ? (
-                    Array.from(new Array(3)).map((_, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Skeleton variant="circular" width={40} height={40} />
-                        </TableCell>
-                        <TableCell>
-                          <Skeleton variant="text" width="80%" />
-                        </TableCell>
-                        <TableCell align="right">
-                          <Skeleton variant="text" width="40%" />
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : maintenances.length > 0 ? (
-                    maintenances.map((maintenance) => (
-                      <Row key={maintenance._id} row={maintenance} />
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={3} align="center">
-                        No maintenance records found.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Card>
-        </SignInContainer>
-      </Layout>
-    </AppTheme>
+                ))
+              ) : maintenances.length > 0 ? (
+                maintenances.map((maintenance) => (
+                  <Row key={maintenance._id} row={maintenance} />
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={3} align="center">
+                    No maintenance records found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </div>
   );
-};
-
-export default Dashboard;
+}

@@ -1,11 +1,13 @@
 import React from "react";
-import Layout from "../components/Layout/Layout";
+// import MiniDrawer from "../components/drawer/AdminDrawer";
+import Layout from "../../Manager/components/Layout/Layout";
 import CssBaseline from "@mui/material/CssBaseline";
-import AppTheme from "../../../form/technician/shared-theme/AppTheme";
+import AppTheme from "../../../form/manager/shared-theme/AppTheme";
 import { styled } from "@mui/material/styles";
 import MuiCard from "@mui/material/Card";
 import { Stack, Typography } from "@mui/material";
-import RegisteredRequest from "../../Tech/HospitalRequestsTables/TRegisteredRequest";
+import CollapsibleTable from "../../Manager/Maintenance/RegisteredMaintenance";
+// import Register from "../../Admin/HospitalsTables/RegisterHospital";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -34,13 +36,12 @@ const SignInContainer = styled(Stack)({
   alignItems: "center",
   justifyContent: "center",
 });
-
-const THospitalRequests = () => {
+const Maintenance = () => {
   return (
     <AppTheme>
       <CssBaseline enableColorScheme />
       <Layout>
-      <Typography
+        <Typography
           variant="h4"
           sx={{
             fontWeight: "bold",
@@ -49,12 +50,25 @@ const THospitalRequests = () => {
             padding: "20px",
           }}
         >
-          Hospital Requests
+         Maintenance
         </Typography>
-        <RegisteredRequest />
+
+        <CollapsibleTable />
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: "bold",
+            textAlign: "left",
+            width: "100%",
+            padding: "20px",
+          }}
+        >
+          {/* Register Hospital */}
+        </Typography>
+        {/* <Register /> */}
       </Layout>
     </AppTheme>
   );
 };
 
-export default THospitalRequests;
+export default Maintenance;

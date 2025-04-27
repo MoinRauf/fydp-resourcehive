@@ -19,8 +19,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PropTypes from "prop-types";
-import DeleteHospital from "./DeleteHospital"; // Import the new DeleteHospital component
-import EditHospital from "./TEditHospital"; // Import the new EditHospital component
+import TDeleteHospital from "../../Tech/HospitalsTables/TDeleteHospital"; // Import the new DeleteHospital component
+import TEditHospital from "../../Tech/HospitalsTables/TDeleteHospital"; // Import the new EditHospital component
 
 // Row Component to show hospital details
 function Row({ row, onDelete, onEdit }) {
@@ -239,7 +239,7 @@ export default function CollapsibleTable() {
       </TableContainer>
 
       {/* Use the extracted DeleteHospital component */}
-      <DeleteHospital
+      <TDeleteHospital
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}
         selectedHospitalId={selectedHospitalId}
@@ -248,7 +248,7 @@ export default function CollapsibleTable() {
       />
 
       {/* Use the extracted EditHospital component */}
-      <EditHospital
+      <TEditHospital
         openEditDialog={openEditDialog}
         setOpenEditDialog={setOpenEditDialog}
         selectedHospital={selectedHospital}

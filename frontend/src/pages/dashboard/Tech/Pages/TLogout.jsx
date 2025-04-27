@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
-const Logout = () => {
+const TLogout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const Logout = () => {
           if (icon) icon.style.fill = "#1a1a1a"; // Dark icon color
         },
       }).then(() => {
-        navigate("/AdminDashboard"); // Stay on AdminDashboard
+        navigate("/"); // Stay on AdminDashboard
       });
       return;
     }
@@ -86,7 +86,7 @@ const Logout = () => {
           navigate("/"); // Redirect to home
         });
       } else {
-        navigate("/AdminDashboard"); // Navigate back to AdminDashboard on cancel
+        navigate("/"); // Navigate back to AdminDashboard on cancel
       }
     });
   }, [navigate]);
@@ -94,4 +94,4 @@ const Logout = () => {
   return <div>Processing logout...</div>;
 };
 
-export default Logout; 
+export default TLogout; 

@@ -196,18 +196,18 @@ export default function TechnicianForm(props) {
         navigate("/signin");
         return;
       }
-      
+
       const response = await axios.post(
         "https://resourcehive-backend.vercel.app/api/v1/users/complete-profile",
         data,
         {
           headers: {
-            // "Content-Type": "application/json",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log(data)
+      console.log(data);
       if (response.status === 200) {
         toast.success("Profile completed successfully!");
         navigate("/hospitals/technician"); // Navigate to home page

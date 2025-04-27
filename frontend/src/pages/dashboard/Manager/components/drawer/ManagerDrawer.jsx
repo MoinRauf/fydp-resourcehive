@@ -139,6 +139,11 @@ export default function MiniDrawer() {
       navigateTo: "/MEquipment",
     },
     {
+      text: "Maintenance",
+      icon: <ExitToAppIcon sx={{ marginLeft: "6.5px" }} />,
+      navigateTo: "/MMaintenance",
+    },
+    {
       text: "Logout",
       icon: <ExitToAppIcon sx={{ marginLeft: "6.5px" }} />,
       navigateTo: "/MLogout",

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import Layout from "../components/Layout/Layout";
 import CssBaseline from "@mui/material/CssBaseline";
-import AppTheme from "../../../form/admin/shared-theme/AppTheme";
+import AppTheme from "../../../form/technician/shared-theme/AppTheme";
 import { styled } from "@mui/material/styles";
 import MuiCard from "@mui/material/Card";
 import { Stack, Typography } from "@mui/material";
@@ -36,7 +36,7 @@ const SignInContainer = styled(Stack)({
   justifyContent: "center",
 });
 
-const Equipment = () => {
+const TEquipment = () => {
   const [selectedHospital, setSelectedHospital] = useState(null);
   const registerEquipmentRef = useRef(null);
 
@@ -93,4 +93,4 @@ const Equipment = () => {
   );
 };
 
-export default Equipment;
+export default TEquipment;

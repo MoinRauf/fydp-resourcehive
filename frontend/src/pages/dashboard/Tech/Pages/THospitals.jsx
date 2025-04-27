@@ -2,12 +2,12 @@ import React from "react";
 // import MiniDrawer from "../components/drawer/AdminDrawer";
 import Layout from "../components/Layout/Layout";
 import CssBaseline from "@mui/material/CssBaseline";
-import AppTheme from "../../../form/admin/shared-theme/AppTheme";
+import AppTheme from "../../../form/technician/shared-theme/AppTheme";
 import { styled } from "@mui/material/styles";
 import MuiCard from "@mui/material/Card";
 import { Stack, Typography } from "@mui/material";
-import CollapsibleTable from "../HospitalsTables/RegisteredHospital";
-import Register from "../HospitalsTables/RegisterHospital";
+import CollapsibleTable from "../../Tech/HospitalsTables/TRegisteredHospital";
+import TRegister from "../../Tech/HospitalsTables/TRegisterHospital";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -36,7 +36,7 @@ const SignInContainer = styled(Stack)({
   alignItems: "center",
   justifyContent: "center",
 });
-const Hospitals = () => {
+const THospitals = () => {
   return (
     <AppTheme>
       <CssBaseline enableColorScheme />
@@ -65,10 +65,10 @@ const Hospitals = () => {
         >
           Register Hospital
         </Typography>
-        <Register />
+        <TRegister />
       </Layout>
     </AppTheme>
   );
 };
 
-export default Hospitals;
+export default THospitals;
