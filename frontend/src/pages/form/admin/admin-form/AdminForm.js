@@ -168,8 +168,8 @@ export default function AdminForm(props) {
     return true;
   };
 
-  // Submit form data
-  const handleSubmit = async (e) => {
+   // Submit form data
+   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
@@ -205,10 +205,10 @@ export default function AdminForm(props) {
           },
         }
       );
-      console.log(response.JSON(),"this is complete profile response")
+
       if (response.status === 200) {
         toast.success("Profile completed successfully!");
-        navigate("/signin"); // Navigate to home page
+        navigate("/signin");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong!");

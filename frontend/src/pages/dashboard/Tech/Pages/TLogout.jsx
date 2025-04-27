@@ -32,7 +32,7 @@ const Logout = () => {
       }).then(() => {
         navigate("/AdminDashboard"); // Stay on AdminDashboard
       });
-      return; // Prevent further code execution if there's no token
+      return;
     }
 
     // Show confirmation dialog
@@ -72,14 +72,15 @@ const Logout = () => {
             popup: "custom-swal-popup", // Custom class for styling
           },
           didOpen: () => {
-            const popup = document.querySelector(".custom-swal-popup");
-            if (popup) popup.style.backgroundColor = "#051221";
-            const title = document.querySelector(".swal2-title");
-            if (title) title.style.color = "#ffffff"; // White text
-            const content = document.querySelector(".swal2-content");
-            if (content) content.style.color = "#ffffff"; // White text
-            const icon = document.querySelector(".swal2-icon svg");
-            if (icon) icon.style.fill = "#1a1a1a"; // Dark icon color
+           // Apply styles with null checks
+        const popup = document.querySelector(".custom-swal-popup");
+        if (popup) popup.style.backgroundColor = "#051221";
+        const title = document.querySelector(".swal2-title");
+        if (title) title.style.color = "#ffffff"; // White text
+        const content = document.querySelector(".swal2-content");
+        if (content) content.style.color = "#ffffff"; // White text
+        const icon = document.querySelector(".swal2-icon svg");
+        if (icon) icon.style.fill = "#1a1a1a"; // Dark icon color
           },
         }).then(() => {
           navigate("/"); // Redirect to home
@@ -90,7 +91,7 @@ const Logout = () => {
     });
   }, [navigate]);
 
-  return null; // Don't render anything to avoid flash of white screen
+  return <div>Processing logout...</div>;
 };
 
-export default Logout;
+export default Logout; 

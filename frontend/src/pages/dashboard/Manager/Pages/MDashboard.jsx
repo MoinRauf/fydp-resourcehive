@@ -6,7 +6,7 @@ import MuiCard from '@mui/material/Card';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import Layout from '../components/Layout/Layout';
 import AppTheme from '../../../form/admin/shared-theme/AppTheme';
-import DataProcessor from '../Trigger/ApiSender';
+import DataProcessor from '../../Admin/Trigger/ApiSender';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -46,7 +46,7 @@ const CompactTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const Dashboard = () => {
+const MDashboard = () => {
   const [modelData, setModelData] = useState({
     venti: [],
     mri: [],
@@ -311,4 +311,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default MDashboard;

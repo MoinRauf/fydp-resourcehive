@@ -152,8 +152,8 @@ export default function SignInCard() {
           // Define role routes for easy navigation
           const roleRoutes = {
             admin: "/adminDashboard",
-            manager: "/managerdashboard",
-            technician: "/techniciandashboard",
+            manager: "/managerDashboard",
+            technician: "/technicianDashboard",
           };
 
           // Check if the role is one of the predefined roles (Admin, Manager, Technician)
