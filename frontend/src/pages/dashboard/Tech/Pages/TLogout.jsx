@@ -90,7 +90,11 @@ const Logout = () => {
     });
   }, [navigate]);
 
-  return null; // Don't render anything to avoid flash of white screen
+  return (
+    <div
+      style={{ backgroundColor: "#051221", height: "100vh", width: "100vw" }}
+    />
+  );
 };
 
 export default Logout;

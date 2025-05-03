@@ -62,7 +62,7 @@ const Logout = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("token"); // Remove token
-        
+
         Swal.fire({
           title: "Logout Successful",
           text: "You have been successfully logged out.",
@@ -90,7 +90,11 @@ const Logout = () => {
     });
   }, [navigate]);
 
-  return null; // Don't render anything to avoid flash of white screen
+  return (
+    <div
+      style={{ backgroundColor: "#051221", height: "100vh", width: "100vw" }}
+    />
+  );
 };
 
 export default Logout;
