@@ -139,6 +139,8 @@ export default function SignInCard() {
 
       // Check if login is successful
       if (response.data && response.data.token) {
+        const userId = response.data.data.user._id;
+        localStorage.setItem("userId", userId); 
         localStorage.setItem("token", response.data.token); // Store token in localStorage
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
         console.log("this is local token", token);

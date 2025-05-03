@@ -26,8 +26,8 @@ const RequestApproval = async (hospitalId, userId, setRequests) => {
       // If not approved, proceed with the API call
       axios
         .patch(
-          `https://resourcehive-backend.vercel.app/api/v1/hospitals/hospital-request-approval/${hospitalId}/${userId}`,
-          { role: "manager" },
+          `https://resourcehive-backend.vercel.app/api/v1/hospitals/hospital-technician-request-approval/${hospitalId}/${userId}`,
+          { role: "technician" },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ const RequestApproval = async (hospitalId, userId, setRequests) => {
                     userId: {
                       ...req.userId,
                       approvalStatus: "approved",
-                      role: "manager",
+                      role: "technician",
                     },
                   }
                 : req

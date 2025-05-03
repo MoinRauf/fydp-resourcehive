@@ -40,6 +40,7 @@ function Row({ row }) {
             setRequests([]);
             return;
           }
+          console.log(row._id ,"this is hospital id")
           const response = await axios.get(
             `https://resourcehive-backend.vercel.app/api/v1/hospitals/${row._id}/get-approval-requests`,
             {

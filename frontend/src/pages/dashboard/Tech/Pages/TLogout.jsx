@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
-const TLogout = () => {
+const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,9 +30,9 @@ const TLogout = () => {
           if (icon) icon.style.fill = "#1a1a1a"; // Dark icon color
         },
       }).then(() => {
-        navigate("/"); // Stay on AdminDashboard
+        navigate("/technicianDashboard"); // Stay on AdminDashboard
       });
-      return;
+      return; // Prevent further code execution if there's no token
     }
 
     // Show confirmation dialog
@@ -62,7 +62,7 @@ const TLogout = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("token"); // Remove token
-        
+
         Swal.fire({
           title: "Logout Successful",
           text: "You have been successfully logged out.",
@@ -72,26 +72,25 @@ const TLogout = () => {
             popup: "custom-swal-popup", // Custom class for styling
           },
           didOpen: () => {
-           // Apply styles with null checks
-        const popup = document.querySelector(".custom-swal-popup");
-        if (popup) popup.style.backgroundColor = "#051221";
-        const title = document.querySelector(".swal2-title");
-        if (title) title.style.color = "#ffffff"; // White text
-        const content = document.querySelector(".swal2-content");
-        if (content) content.style.color = "#ffffff"; // White text
-        const icon = document.querySelector(".swal2-icon svg");
-        if (icon) icon.style.fill = "#1a1a1a"; // Dark icon color
+            const popup = document.querySelector(".custom-swal-popup");
+            if (popup) popup.style.backgroundColor = "#051221";
+            const title = document.querySelector(".swal2-title");
+            if (title) title.style.color = "#ffffff"; // White text
+            const content = document.querySelector(".swal2-content");
+            if (content) content.style.color = "#ffffff"; // White text
+            const icon = document.querySelector(".swal2-icon svg");
+            if (icon) icon.style.fill = "#1a1a1a"; // Dark icon color
           },
         }).then(() => {
           navigate("/"); // Redirect to home
         });
       } else {
-        navigate("/"); // Navigate back to AdminDashboard on cancel
+        navigate("/technicianDashboard"); // Navigate back to AdminDashboard on cancel
       }
     });
   }, [navigate]);
 
-  return <div>Processing logout...</div>;
+  return null; // Don't render anything to avoid flash of white screen
 };
 
-export default TLogout; 
+export default Logout;

@@ -5,7 +5,7 @@ import {
   TableBody,
   TableHead,
   TableRow,
-  TableCell,  
+  TableCell,
   TableContainer,
   Paper,
   Skeleton,
@@ -22,27 +22,48 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import EditMaintenance from "./EditMaintenance"; // Adjust path as needed
+import DeleteMaintenance from "./DeleteMaintenance"; // Adjust path as needed
 
 // Row Component to show maintenance details
-function Row({ row }) {
+function Row({
+  row,
+  setOpenEditDialog,
+  setOpenDeleteDialog,
+  setSelectedMaintenance,
+}) {
   const [open, setOpen] = useState(false);
+
+  const handleEdit = () => {
+    setSelectedMaintenance(row);
+    setOpenEditDialog(true);
+  };
+
+  const handleDelete = () => {
+    setSelectedMaintenance(row);
+    setOpenDeleteDialog(true);
+  };
 
   return (
     <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
-          <IconButton size="small" onClick={() => setOpen(!open)}>
+          {/* <IconButton size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
+          </IconButton> */}
         </TableCell>
         <TableCell component="th" scope="row">
           {new Date(row.timestamp).toLocaleString()}
         </TableCell>
         <TableCell align="right">
-          <IconButton color="primary" sx={{ marginRight: 1 }}>
+          <IconButton
+            color="primary"
+            sx={{ marginRight: 1 }}
+            onClick={handleEdit}
+          >
             <EditIcon />
           </IconButton>
-          <IconButton color="error">
+          <IconButton color="error" onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </TableCell>
@@ -63,7 +84,7 @@ function Row({ row }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell>{row._id}</TableCell>
+                    <TableCell>{row.maintenanceId}</TableCell>
                     <TableCell>{row.timestamp}</TableCell>
                   </TableRow>
                 </TableBody>
@@ -85,6 +106,9 @@ export default function MaintenanceTable() {
   const [loadingHospitals, setLoadingHospitals] = useState(true);
   const [loadingEquipment, setLoadingEquipment] = useState(false);
   const [loadingMaintenances, setLoadingMaintenances] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [selectedMaintenance, setSelectedMaintenance] = useState(null);
 
   // Fetch hospitals
   useEffect(() => {
@@ -101,9 +125,14 @@ export default function MaintenanceTable() {
           "https://resourcehive-backend.vercel.app/api/v1/hospitals/registered-hospitals",
           { headers: { Authorization: `Bearer ${token}` } }
         );
+        console.log("Hospitals API response:", response.data);
         setHospitals(response.data.data || []);
       } catch (error) {
-        console.error("Error fetching hospitals:", error);
+        console.error("Error fetching hospitals:", {
+          status: error.response?.status,
+          data: error.response?.data,
+          message: error.message,
+        });
       } finally {
         setLoadingHospitals(false);
       }
@@ -128,6 +157,7 @@ export default function MaintenanceTable() {
           setEquipment([]);
           return;
         }
+        console.log("Fetching equipment for hospital ID:", selectedHospital);
         const response = await axios.get(
           `https://resourcehive-backend.vercel.app/api/v1/equipments/${selectedHospital}`,
           { headers: { Authorization: `Bearer ${token}` } }
@@ -171,6 +201,7 @@ export default function MaintenanceTable() {
       setMaintenances([]);
       return;
     }
+    console.log("Fetching maintenances for equipment ID:", selectedEquipment);
     const fetchMaintenances = async () => {
       setLoadingMaintenances(true);
       try {
@@ -184,23 +215,52 @@ export default function MaintenanceTable() {
           `https://resourcehive-backend.vercel.app/api/v1/${selectedHospital}/${selectedEquipment}/maintenance`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        setMaintenances(response.data.data || []);
+        console.log("Maintenance API full response:", response);
+        console.log("Maintenance API response.data:", response.data);
+        console.log(
+          "Maintenance data (response.data.data):",
+          response.data.data
+        );
+        console.log(
+          "Maintenance history (response.data.data.maintenanceHistory):",
+          response.data.data?.maintenanceHistory
+        );
+        console.log(
+          "Is response.data.data.maintenanceHistory an array?",
+          Array.isArray(response.data.data?.maintenanceHistory)
+        );
+        const maintenanceData =
+          response.data.data?.maintenanceHistory || response.data.data || [];
+        console.log("maintenanceData after processing:", maintenanceData);
+
+        // Log _id and maintenanceId for each record
+        maintenanceData.forEach((record) => {
+          console.log(
+            `Record: _id=${record._id}, maintenanceId=${record.maintenanceId}`
+          );
+        });
+
+        setMaintenances(Array.isArray(maintenanceData) ? maintenanceData : []);
       } catch (error) {
-        console.error("Error fetching maintenances:", error);
+        console.error("Error fetching maintenances:", {
+          status: error.response?.status,
+          data: error.response?.data,
+          message: error.message,
+        });
         setMaintenances([]);
       } finally {
         setLoadingMaintenances(false);
       }
     };
     fetchMaintenances();
-    const intervalId = setInterval(fetchMaintenances, 30000);
+    const intervalId = setInterval(fetchMaintenances, 300000);
     return () => clearInterval(intervalId);
   }, [selectedHospital, selectedEquipment]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
-        <Typography variant="h4" className="mb-6 text-gray-800 font-bold">
+        <Typography variant="h4" className="mb-6 text-gray-800 font-bold" style={{marginBottom:"20px"}}>
           Maintenance Records
         </Typography>
 
@@ -287,7 +347,13 @@ export default function MaintenanceTable() {
                 ))
               ) : maintenances.length > 0 ? (
                 maintenances.map((maintenance) => (
-                  <Row key={maintenance._id} row={maintenance} />
+                  <Row
+                    key={maintenance._id}
+                    row={maintenance}
+                    setOpenEditDialog={setOpenEditDialog}
+                    setOpenDeleteDialog={setOpenDeleteDialog}
+                    setSelectedMaintenance={setSelectedMaintenance}
+                  />
                 ))
               ) : (
                 <TableRow>
@@ -299,6 +365,27 @@ export default function MaintenanceTable() {
             </TableBody>
           </Table>
         </TableContainer>
+
+        {/* Edit Maintenance Dialog */}
+        <EditMaintenance
+          openEditDialog={openEditDialog}
+          setOpenEditDialog={setOpenEditDialog}
+          selectedMaintenance={selectedMaintenance}
+          setSelectedMaintenance={setSelectedMaintenance}
+          hospitalId={selectedHospital}
+          equipmentId={selectedEquipment}
+          setMaintenances={setMaintenances}
+        />
+
+        {/* Delete Maintenance Dialog */}
+        <DeleteMaintenance
+          openDeleteDialog={openDeleteDialog}
+          setOpenDeleteDialog={setOpenDeleteDialog}
+          selectedMaintenance={selectedMaintenance}
+          hospitalId={selectedHospital}
+          equipmentId={selectedEquipment}
+          setMaintenances={setMaintenances}
+        />
       </div>
     </div>
   );

@@ -40,8 +40,9 @@ function Row({ row }) {
             setRequests([]);
             return;
           }
+          console.log("manager hospital id to fetch hospital request", row._id)
           const response = await axios.get(
-            `https://resourcehive-backend.vercel.app/api/v1/hospitals/${row._id}/get-approval-requests`,
+            `https://resourcehive-backend.vercel.app/api/v1/hospitals/${row._id}/get-approval-technicians-requests`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

@@ -19,6 +19,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import RequestPageIcon from "@mui/icons-material/RequestPage";
+import BuildIcon from '@mui/icons-material/Build';
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 // import HomeIcon from "@mui/icons-material/Home";
@@ -140,9 +141,10 @@ export default function MiniDrawer() {
     },
     {
       text: "Maintenance",
-      icon: <ExitToAppIcon sx={{ marginLeft: "6.5px" }} />,
+      icon: <BuildIcon sx={{ marginLeft: "6.5px" }} />,
       navigateTo: "/MMaintenance",
-    },
+    }
+,    
     {
       text: "Logout",
       icon: <ExitToAppIcon sx={{ marginLeft: "6.5px" }} />,

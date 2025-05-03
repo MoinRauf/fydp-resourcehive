@@ -22,22 +22,25 @@ const EditMaintenance = ({
 }) => {
   const handleEditSubmit = async () => {
     try {
-      // Fetch token from localStorage
       const token = localStorage.getItem("token");
       if (!token) {
-        console.error("No token found in localStorage. Please log in.");
+        console.error("No token found in localStorage.");
         alert("Authentication required. Please log in.");
         return;
       }
 
-      const url = `https://resourcehive-backend.vercel.app/api/v1/${hospitalId}/${equipmentId}/maintenance/${selectedMaintenance._id}`;
-      console.log("Request URL:", url);
-      console.log("Maintenance ID:", selectedMaintenance._id);
-      console.log("Data being sent to API:", { timestamp: selectedMaintenance.timestamp });
+      console.log("=== Editing Maintenance ===");
+      console.log("Hospital ID:", hospitalId);
+      console.log("Equipment ID:", equipmentId);
+      console.log("Maintenance ID:", selectedMaintenance.maintenanceId);
+      console.log("Local Timestamp:", selectedMaintenance.timestamp);
+
+      const url = `https://resourcehive-backend.vercel.app/api/v1/${hospitalId}/${equipmentId}/maintenance/${selectedMaintenance.maintenanceId}`;
+      const utcTimestamp = new Date(selectedMaintenance.timestamp).toISOString();
 
       const response = await axios.patch(
         url,
-        { timestamp: selectedMaintenance.timestamp },
+        { timestamp: utcTimestamp },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -45,12 +48,13 @@ const EditMaintenance = ({
           },
         }
       );
+
       console.log("API Response:", response.data);
 
-      setMaintenances((prevMaintenances) =>
-        prevMaintenances.map((maintenance) =>
-          maintenance._id === selectedMaintenance._id
-            ? { ...maintenance, timestamp: selectedMaintenance.timestamp }
+      setMaintenances((prev) =>
+        prev.map((maintenance) =>
+          maintenance.maintenanceId === selectedMaintenance.maintenanceId
+            ? { ...maintenance, timestamp: utcTimestamp }
             : maintenance
         )
       );
@@ -60,8 +64,8 @@ const EditMaintenance = ({
     } catch (error) {
       console.error("Error updating maintenance:", error);
       if (error.response) {
-        console.log("Response Status:", error.response.status);
-        console.log("Response Data:", error.response.data);
+        console.log("Status:", error.response.status);
+        console.log("Data:", error.response.data);
       }
     }
   };
@@ -70,7 +74,7 @@ const EditMaintenance = ({
     const { name, value } = e.target;
     setSelectedMaintenance((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value, // Keep value in local time format (e.g. 2025-11-01T08:00)
     }));
   };
 
@@ -78,43 +82,117 @@ const EditMaintenance = ({
     <Dialog
       open={openEditDialog}
       onClose={() => setOpenEditDialog(false)}
-      sx={{
-        "& .MuiDialog-paper": {
-          backgroundColor: "#051221",
-          color: "#FFFFFF",
-        },
-      }}
+      style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
     >
-      <DialogTitle sx={{ color: "#FFFFFF" }}>Edit Maintenance</DialogTitle>
-      <DialogContent>
-        {selectedMaintenance && (
-          <Box sx={{ mt: 1 }}>
-            <FormControl fullWidth>
-              <TextField
-                name="timestamp"
-                label="Maintenance Timestamp"
-                type="datetime-local"
-                value={
-                  selectedMaintenance.timestamp
-                    ? new Date(selectedMaintenance.timestamp).toISOString().slice(0, 16)
-                    : ""
-                }
-                onChange={handleInputChange}
-                sx={{ padding: "7px", backgroundColor: "#FFFFFF", borderRadius: "4px" }}
-                InputLabelProps={{ shrink: true }}
-              />
-            </FormControl>
-          </Box>
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setOpenEditDialog(false)} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleEditSubmit} color="primary">
-          Save
-        </Button>
-      </DialogActions>
+      <div
+        style={{
+          backgroundColor: "#051221",
+          color: "#ffffff",
+          width: "400px",
+          maxWidth: "100%",
+          borderRadius: "8px",
+          padding: "60px",
+        }}
+      >
+        <DialogTitle
+          style={{
+            color: "#ffffff",
+            fontSize: "1.5rem",
+            fontWeight: "bold",
+            padding: "10px 0",
+            textAlign: "center",
+          }}
+        >
+          Edit Maintenance
+        </DialogTitle>
+        <DialogContent
+          style={{
+            padding: "20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+        >
+          {selectedMaintenance && (
+            <Box>
+              <FormControl style={{ width: "100%" }}>
+                <label
+                  style={{
+                    color: "#ffffff",
+                    fontSize: "0.9rem",
+                    marginBottom: "8px",
+                    display: "block",
+                  }}
+                >
+                  Maintenance Timestamp
+                </label>
+                <TextField
+                  name="timestamp"
+                  type="datetime-local"
+                  value={
+                    selectedMaintenance.timestamp
+                      ? selectedMaintenance.timestamp.slice(0, 16)
+                      : ""
+                  }
+                  onChange={handleInputChange}
+                  InputLabelProps={{ shrink: true }}
+                  style={{
+                    width: "100%",
+                    backgroundColor: "#051221",
+                    border: "1px solid #ffffff",
+                    borderRadius: "4px",
+                  }}
+                  inputProps={{
+                    style: {
+                      color: "#ffffff",
+                      fontSize: "1rem",
+                      padding: "10px",
+                    },
+                  }}
+                />
+              </FormControl>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions
+          style={{
+            padding: "10px 20px",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button
+            onClick={() => setOpenEditDialog(false)}
+            style={{
+              backgroundColor: "#f44336",
+              color: "#ffffff",
+              padding: "8px 16px",
+              borderRadius: "4px",
+              textTransform: "none",
+              fontSize: "1rem",
+            }}
+            onMouseOver={(e) => (e.target.style.backgroundColor = "#d32f2f")}
+            onMouseOut={(e) => (e.target.style.backgroundColor = "#f44336")}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleEditSubmit}
+            style={{
+              backgroundColor: "#388e3c",
+              color: "#ffffff",
+              padding: "8px 16px",
+              borderRadius: "4px",
+              textTransform: "none",
+              fontSize: "1rem",
+            }}
+            onMouseOver={(e) => (e.target.style.backgroundColor = "#2c6e31")}
+            onMouseOut={(e) => (e.target.style.backgroundColor = "#388e3c")}
+          >
+            Save
+          </Button>
+        </DialogActions>
+      </div>
     </Dialog>
   );
 };

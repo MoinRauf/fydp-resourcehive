@@ -1,18 +1,28 @@
 // src/App.jsx
-import React from "react";
-// import Navbar from "./components/Navbar"; // Import Navbar
-// import Footer from "./components/Footer"; // Import Footer
+import React, { useEffect } from "react";
 import RouteComponent from "./routes/Routes";
-import { Toaster } from "react-hot-toast"; // Import the Toaster component
+import { Toaster } from "react-hot-toast";
+
+if (process.env.NODE_ENV === "production") {
+  console.log = () => {};
+  console.warn = () => {};
+  console.info = () => {};
+  console.debug = () => {};
+  console.trace = () => {};
+}
+
+// console.log = () => {};
 
 const App = () => {
+  useEffect(() => {
+    localStorage.setItem("mui-color-scheme-dark", "dark");
+    localStorage.setItem("mui-color-scheme-light", "light");
+    localStorage.setItem("mui-mode", "system");
+  }, []);
   return (
     <div>
-      {/* <Navbar /> */}
       <RouteComponent />
-      <Toaster /> {/* Add the Toaster component here */}
-      {/* <Footer /> */}
-      {/* checking */}
+      <Toaster />
     </div>
   );
 };
