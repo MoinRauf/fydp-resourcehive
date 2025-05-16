@@ -3,14 +3,17 @@ import React, { useEffect } from "react";
 import RouteComponent from "./routes/Routes";
 import { Toaster } from "react-hot-toast";
 
+// Disable console logs in production
 if (process.env.NODE_ENV === "production") {
   console.log = () => {};
   console.warn = () => {};
   console.info = () => {};
   console.debug = () => {};
   console.trace = () => {};
-  // console.trace = () => {};
 }
+
+// 👉 CHANGE THIS TO false WHEN YOU WANT TO SHOW THE PROJECT
+const BLOCK_PUBLIC_ACCESS = false;
 
 const App = () => {
   const isBlockedDomain = window.location.hostname === "fydp-resourcehive.vercel.app";
@@ -21,7 +24,7 @@ const App = () => {
     localStorage.setItem("mui-mode", "system");
   }, []);
 
-  if (isBlockedDomain) {
+  if (BLOCK_PUBLIC_ACCESS && isBlockedDomain) {
     return (
       <div
         style={{
