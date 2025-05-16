@@ -9,6 +9,7 @@ if (process.env.NODE_ENV === "production") {
   console.info = () => {};
   console.debug = () => {};
   console.trace = () => {};
+  // console.trace = () => {};
 }
 
 const App = () => {
