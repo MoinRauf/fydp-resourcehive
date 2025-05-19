@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 //  CHANGE THIS TO false WHEN YOU WANT TO SHOW THE PROJECT
-const BLOCK_PUBLIC_ACCESS = true;
+const BLOCK_PUBLIC_ACCESS = false;
 
 const App = () => {
   const isBlockedDomain = window.location.hostname === "fydp-resourcehive.vercel.app";
